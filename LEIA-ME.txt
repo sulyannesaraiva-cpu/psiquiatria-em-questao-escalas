@@ -1,0 +1,867 @@
+ESCALAS PSIQUIÁTRICAS — V17 LOCAL
+
+Abra index.html diretamente no navegador.
+
+Novidades:
+- Busca + filtros por categoria.
+- GAD-7.
+- GDS/EDG-15.
+- APGAR da Família e dos Amigos.
+- Pfeffer/QAF.
+- CDR-SB.
+- Cálculo imediato, interpretação, copiar e imprimir.
+- Nenhuma resposta enviada a servidor ou persistida.
+
+Observação:
+Esta versão adiciona somente instrumentos/regras que puderam ser confirmados nos materiais enviados. Escalas adicionais permanecem fora da build até revisão suficiente do conteúdo, cálculo e condições de reprodução.
+
+
+NOVO NA V3:
+- HCL-32 VB completo: 32 itens Sim/Não.
+- Soma automática de respostas afirmativas (0–32).
+- Corte brasileiro >=18 com aviso explícito de rastreamento, não diagnóstico.
+- Fonte do formulário: PDF de 2 páginas enviado pelo usuário; interpretação conferida no material de referência previamente enviado.
+
+
+NOVO NA V4:
+- Cornell/CSDD: 19 itens completos do PDF enviado.
+- Pontuação: 0 = ausente/outras respostas; 1 = moderado/intermitente; 2 = severo.
+- Total automático 0–38.
+- Sem classificação por ponto de corte nesta build: o PDF fornecido não estabelece um corte.
+- Uso desta implementação restrito ao teste local enquanto a condição de reprodução digital da versão utilizada permanece em revisão.
+
+
+NOVO NA V5:
+- ASSIST OMS v3.1 com fluxo específico por substância.
+- 10 opções/classes na interface (9 classes principais + outras).
+- Q1 e Q8 fora do escore; Q2–Q7 compõem o escore específico.
+- Q5 não aplicada ao tabaco.
+- Interpretação automática por substância:
+  álcool: 0–10 baixo, 11–26 moderado, >=27 alto;
+  demais: 0–3 baixo, 4–26 moderado, >=27 alto.
+- Aviso adicional quando há relato de uso injetável nos últimos 3 meses.
+- Instrumento documentado como domínio público e de reprodução livre na fonte utilizada.
+
+
+NOVO NA V6:
+- EAM-BR (Bech-Rafaelsen) completa: 11 itens, cada um 0–4, total 0–44.
+- Âncoras clínicas incorporadas a partir do Anexo 1 do artigo enviado.
+- Item Trabalho diferencia primeira avaliação de avaliações semanais/seguimento.
+- Resultado usa >=15 apenas como referência à correspondência publicada com CGI >=3.
+- As médias de CGI do artigo NÃO foram convertidas em faixas rígidas de gravidade.
+- Instrumento destinado à entrevista semiestruturada conduzida pelo clínico.
+
+
+NOVO NA V7 — EXPANSÃO PSICOGERIATRIA:
+- FAST (estadiamento funcional)
+- Índice de Barthel
+- Karnofsky
+- Escore de Hachinski
+- Índice de Katz
+- Índice de Lawton
+- SARC-F + CP
+- Fluência verbal semântica (animais)
+- Teste do Relógio (Shulman 0–5)
+- ECOG Performance Status
+- Rankin modificada
+- Algoritmo de sarcopenia (módulo parcial baseado nos campos disponíveis)
+Mantidos: APGAR, Pfeffer, CDR-SB, GDS-15, Cornell e demais escalas psiquiátricas já presentes.
+
+NÃO incorporados nesta build: MEEM, MNA e MoCA; exigem revisão específica de condições de reprodução/licença.
+Também não foram automatizados itens cuja página-fonte não forneceu regra interpretativa suficiente.
+
+
+AJUSTE V7.1 — ACESSO À PSICOGERIATRIA:
+- Todas as escalas geriátricas/psicogeriátricas já implementadas foram reunidas sob a categoria “Psicogeriatria”.
+- Foi criado acesso rápido para abrir diretamente essa categoria.
+- Nenhum item, cálculo, ponto de corte ou interpretação das escalas foi alterado.
+- As demais categorias psiquiátricas permanecem separadas.
+
+
+NOVO NA V8 — PSICOGERIATRIA:
+- Tinetti (equilíbrio 16 + marcha 12 = 28).
+- Fenótipo de Fragilidade de Fried (5 critérios).
+- CES-D (20 itens; 0–60; corte 15 conforme folha geriátrica).
+- 10-CS com ajuste educacional e interpretação.
+- ESAS com 10 sintomas de 0–10.
+- PPS e Charlson/ICIC permanecem pendentes até recuperação integral das respectivas tabelas nos arquivos.
+
+
+NOVO NA V9 — ORIENTAÇÃO DE APLICAÇÃO:
+- Todas as escalas exibem um bloco “Como aplicar” antes das perguntas.
+- O bloco informa objetivo, quem responde/quem aplica, período, orientação ao aplicador, tempo e autoria/origem quando sustentados pelos materiais.
+- Orientações específicas mais detalhadas adicionadas para GAD-7, HCL-32, ASSIST, EAM-BR, Cornell, GDS-15, CDR, CES-D, Fried, Tinetti, Barthel, Katz, Lawton, Fluência Verbal, Relógio, 10-CS e ESAS.
+- Quando autoria/tempo/versão não puderam ser confirmados com segurança nos arquivos recuperados, o site informa isso em vez de inventar.
+- Nenhum cálculo, item ou ponto de corte foi alterado nesta revisão.
+
+
+NOVO NA V10 — SUBCLASSIFICAÇÕES DE PSICOGERIATRIA:
+- Cognição e Demências
+- Humor no Idoso
+- Funcionalidade e Autonomia
+- Mobilidade, Quedas e Fragilidade
+- Sarcopenia
+- Cuidados Paliativos e Sintomas
+- Avaliação Familiar / Social
+- As subcategorias aparecem somente ao acessar Psicogeriatria.
+- Existe opção “Todos” para visualizar o catálogo psicogeriátrico completo.
+- Os cartões identificam discretamente “Psicogeriatria › subcategoria”.
+- Nenhum item, cálculo, interpretação ou orientação clínica foi alterado nesta revisão.
+
+
+NOVO NA V11:
+- DASS-21 completa: 21 itens, três subescalas, multiplicação x2 e classificação automática.
+- EPS-10: 10 itens, inversão automática dos itens positivos e total 0–40; sem cortes inventados.
+- BPRS-A: 18 itens, 0–6, total 0–108, com orientação explícita entre relato e observação.
+- Mantido o bloco “Como aplicar” com autoria/origem e período.
+- MEEM não foi incorporado nesta rodada: o material de referência alerta para direitos autorais adquiridos por editora; será tratado separadamente.
+
+
+NOVO NA V12:
+- HAM-D 17: estrutura de 17 itens, total 0–52, aplicação heteroavaliativa na última semana. O site não inventa faixa universal de gravidade.
+- PDAS: 11 itens, com subtotais HAM-D6 e BPRS5; aviso explícito de que suicidalidade não integra a escala e precisa avaliação separada.
+- SNAP-IV 26: desatenção, hiperatividade/impulsividade e oposição/desafio, com médias e critérios categóricos apresentados na referência.
+- LSAS: 24 situações, medo/ansiedade + evitação, total 0–144 e subtotais.
+- Todos receberam bloco Como aplicar, autoria/origem e período.
+- CDRS-R, ATA e ASRS-18 permanecem para rodada seguinte, para revisão integral da versão e condições de reprodução.
+
+
+NOVO NA V13:
+- ASRS-18: 18 itens, frequência 0–4, desatenção 0–36, hiperatividade/impulsividade 0–36, total 0–72.
+- O ponto de corte americano 24 citado na folha não foi automatizado porque o próprio arquivo recuperado não esclarece suficientemente a qual escore ele se aplica.
+- CDRS-R: 17 domínios, autoria/origem e ponto de corte 40 conforme arquivo enviado.
+- CDRS-R inclui alerta destacado quando o item de ideação suicida recebe pontuação, sem transformar o escore em substituto de avaliação clínica de risco.
+- ATA não entrou nesta build: a busca nos arquivos não recuperou conteúdo suficiente do formulário/pontuação para uma implementação fiel.
+
+
+NOVO NA V14:
+- Nova categoria: Psicologia Positiva e Bem-estar.
+- ESV/SWLS: 5 itens, 1–7, total 5–35 e interpretação conforme material enviado.
+- Escala de Esquiva e Desconforto para Agorafobia: 10 situações, total 0–30 e faixas do arquivo.
+- Escala para Avaliação do Pânico: 13 sintomas + 3 características, com regra de rastreio do arquivo e ressalva de diagnóstico diferencial.
+- PANAS não foi incorporada nesta build porque o material de referência disponível informa direitos autorais da versão original.
+- ECAP/BES foi confirmada como forte candidata (16 itens e faixas <=17, 18–26, >=27), mas será implementada em rodada própria para preservar exatamente as pontuações específicas de cada uma das 62 afirmativas.
+- ATA continua pendente: o arquivo confirma 36 itens, 20–30 min e corte 15, mas não recuperamos os 36 itens completos.
+
+
+NOVO NA V15:
+- ECAP/BES completa incorporada em Transtornos Alimentares.
+- 16 grupos / 62 afirmações.
+- Grade de correção específica publicada no artigo brasileiro aplicada alternativa por alternativa.
+- Classificação automática: <=17 sem CAP; 18–26 CAP moderada; >=27 CAP grave.
+- Instruções de aplicação, autores, tradução brasileira e tempo médio 10–15 minutos.
+- A calculadora exige resposta em todos os 16 grupos antes de gerar o resultado.
+- Resultado ressalta que a escala é dimensional/de rastreamento e que diagnóstico deve ser confirmado por entrevista clínica.
+
+
+NOVO NA V16 — PSICOGERIATRIA:
+- Escala de Demência de Blessed adicionada em Psicogeriatria > Cognição e Demências.
+- 22 itens organizados em Vida quotidiana (0–8), Mudança de hábitos (0–9) e Personalidade/interesses/entusiasmo (0–11).
+- Total máximo 28, conforme o arquivo.
+- Aplicação orientada para acompanhante/informante.
+- Autoria: Blessed, Tomlinson e Roth (1968); tradução/organização em português conforme arquivo.
+- Nenhuma faixa diagnóstica foi inventada: o PDF recuperado fornece total máximo, mas não classificação por intervalos.
+- Inventário de Comportamento Frontal não foi incorporado: o próprio arquivo informa restrição de direitos autorais para uso não comercial/licenciamento.
+- NPI permanece pendente para revisão específica de condições de reprodução antes de implementação integral.
+
+
+NOVO NA V17 — PSICOGERIATRIA:
+- DAD (Disability Assessment for Dementia) adicionada em Funcionalidade e Autonomia.
+- Período: duas últimas semanas.
+- Cotação: Sim=1, Não=0, N/A excluído do denominador.
+- Resultado em número de tarefas independentes / tarefas aplicáveis e percentual.
+- Sem faixas diagnósticas inventadas.
+- NPI e Zarit foram localizados integralmente/parcialmente no material, mas não foram reproduzidos nesta build: serão revisados separadamente quanto à forma integral, cálculo e condições de reprodução da versão disponibilizada.
+
+
+CORREÇÃO V17.1:
+- Corrigido erro de sintaxe JavaScript na função da Escala para Avaliação do Pânico.
+- Esse erro interrompia a execução de todo o JavaScript da página e fazia o catálogo/filtros não aparecerem.
+- O JavaScript completo foi submetido a verificação sintática antes de empacotar esta versão.
+- Conteúdo clínico, escalas e cálculos da v17 foram preservados.
+
+
+CORREÇÃO V17.2 — SUBCATEGORIAS DE PSICOGERIATRIA:
+- Corrigida a lógica que exibe os filtros secundários de Psicogeriatria.
+- A versão anterior dependia de encontrar um botão com classe CSS 'active', mas o estado real do filtro nem sempre usava essa classe.
+- O acesso rápido à Psicogeriatria agora força a atualização do painel de subcategorias.
+- Mantidas as subcategorias: Todos; Cognição e Demências; Humor no Idoso; Funcionalidade e Autonomia; Mobilidade, Quedas e Fragilidade; Sarcopenia; Cuidados Paliativos e Sintomas; Avaliação Familiar / Social.
+- JavaScript completo verificado sintaticamente antes do empacotamento.
+
+
+ALTERAÇÃO V17.3 — NAVEGAÇÃO DE PSICOGERIATRIA:
+- Removido o bloco/botão “Acesso rápido — Psicogeriatria”.
+- As subcategorias de Psicogeriatria agora são uma navegação permanente abaixo da busca, sem depender de botão ativo, categoria ativa ou clique prévio.
+- Subcategorias: Todos; Cognição e Demências; Humor no Idoso; Funcionalidade e Autonomia; Mobilidade, Quedas e Fragilidade; Sarcopenia; Cuidados Paliativos e Sintomas; Avaliação Familiar / Social.
+- Ao selecionar uma subcategoria, o catálogo mostra somente instrumentos daquela área de Psicogeriatria.
+- “Todos” retorna ao catálogo geral.
+- JavaScript completo validado sintaticamente antes do empacotamento.
+
+
+CORREÇÃO V17.4 — FILTROS DE PSICOGERIATRIA:
+- O painel de subcategorias NÃO aparece mais quando a categoria principal “Todos” está selecionada.
+- O painel aparece somente quando “Psicogeriatria” é selecionada.
+- Cada subcategoria agora filtra efetivamente os cartões pela propriedade subcategory do instrumento.
+- Ao sair de Psicogeriatria para outra categoria, o filtro secundário é resetado para “Todos”.
+- Removido o comportamento da v17.3 que deixava o painel de Psicogeriatria permanentemente visível.
+- Mantido sem botão de acesso rápido.
+- JavaScript completo validado sintaticamente.
+
+
+CORREÇÃO V17.5 — REESTRUTURAÇÃO DOS FILTROS:
+- Identificada a causa real: renderCards() criava os cartões sem atributo data-id, enquanto as correções anteriores tentavam filtrar elementos [data-id] depois da renderização. Por isso nenhum cartão era ocultado.
+- O filtro de subcategoria agora foi incorporado diretamente em renderCards(), antes da criação dos cartões.
+- Eliminado o estado paralelo catalogCategory; agora categoria e subcategoria usam o estado real do aplicativo (`active` + `psychSubcategory`).
+- Subcategorias aparecem somente quando a categoria principal Psicogeriatria está ativa.
+- Cada cartão psicogeriátrico recebe data-id e exibe sua subcategoria.
+- Busca textual também considera o nome da subcategoria.
+- JavaScript completo validado sintaticamente.
+
+
+NOVO NA V18 — NPI:
+- Nova subcategoria em Psicogeriatria: Sintomas Neuropsiquiátricos e Cuidador.
+- NPI/INP incluído com 12 domínios.
+- Período: último mês; respondido por cuidador/familiar; duração aproximada 10–15 min.
+- Frequência 1–4; gravidade 1–3; escore de domínio = frequência x gravidade.
+- Desgaste do cuidador 0–5, calculado separadamente.
+- Resultado principal: soma dos 10 domínios originais (0–120).
+- Sono e apetite aparecem separadamente; quando incluídos, o site também mostra total de 12 domínios (0–144).
+- Nenhuma faixa diagnóstica foi inventada.
+- Zarit permanece pendente até revisão integral do formulário.
+
+
+NOVO NA V19:
+- Zarit de 7 itens adicionada exatamente conforme o novo PDF enviado.
+- Importante: esta é a versão curta de 7 itens do material de Atenção Domiciliar, NÃO a Zarit clássica de 22 itens.
+- Respostas 1–5; total 7–35.
+- Faixas da fonte: até 14 leve; 15–21 moderada; acima de 22 grave.
+- A fonte deixa exatamente 22 sem classificação explícita; o site sinaliza isso em vez de inventar uma faixa.
+- Orientação explícita: não aplicar na presença do idoso.
+
+
+NOVO NA V20:
+- SRQ-20 completo conforme PDF enviado: 20 itens, últimos 30 dias, Sim=1/Não=0.
+- Critério mostrado exatamente como na fonte enviada: >=7 respostas SIM.
+- Alerta específico quando o item 17 (ideia de acabar com a vida) é positivo.
+- PCL-5 completa conforme tradução EPINET enviada: 20 itens, último mês, 0–4, total 0–80.
+- PCL-5: nenhum ponto de corte automatizado, pois o PDF enviado não fornece corte ou regra diagnóstica.
+- PCL-5 mostra subtotais dos quatro agrupamentos de sintomas correspondentes aos itens 1–5, 6–7, 8–14 e 15–20.
+
+
+NOVO NA V21:
+- HAM-A — Escala de Ansiedade de Hamilton adicionada em Ansiedade.
+- 14 itens heteroavaliativos; cada item 0–4; total 0–56.
+- Aplicação clínica aproximada de 10–15 minutos.
+- A fonte informa que a HAM-A é de domínio público.
+- O ponto de corte 10/11 citado pela fonte deriva de uma amostra brasileira específica (TAG + doença de Parkinson) e NÃO é aplicado automaticamente como classificação universal.
+
+
+NOVO NA V22:
+- MADRS — Escala de Depressão de Montgomery-Åsberg adicionada.
+- Instrumento de domínio público conforme a fonte enviada.
+- Heteroavaliação; 10 itens; últimos 7 dias; 0–6 por item; total 0–60.
+- Valores intermediários 1, 3 e 5 permitidos.
+- Classificação exibida conforme uma proposta citada pela fonte: 0–8 remissão; 9–17 leve; 18–34 moderado; >35 grave.
+- O site explicita que os autores originais não definiram pontos de corte e que há propostas distintas na literatura.
+- Item 10 >1 gera alerta para investigação clínica cuidadosa de ideação suicida, conforme orientação da fonte.
+- Não utilizar com finalidade diagnóstica.
+
+
+NOVO NA V23:
+- GAD-7 adicionada em Ansiedade.
+- 7 itens completos conforme o quadro da fonte enviada.
+- Autorrelato referente às duas últimas semanas; respostas 0–3; total 0–21.
+- Interpretação da fonte: 0–4 pouca/nenhuma ansiedade; 5–9 leve; 10–14 moderada; >=15 grave.
+- Escore >=10 sinaliza necessidade de avaliação mais aprofundada para potencial TAG; não é diagnóstico isolado.
+- Tempo médio aproximado: 2 min 30 s.
+- A fonte informa explicitamente que a GAD-7 é gratuita e não exige permissão para reprodução, tradução, exibição ou distribuição.
+
+
+NOVO NA V24:
+- DASS-21 completa adicionada em Humor e Ansiedade.
+- 21 itens; última semana; respostas 0–3.
+- Depressão: itens 3,5,10,13,16,17,21.
+- Ansiedade: itens 2,4,7,9,15,19,20.
+- Estresse: itens 1,6,8,11,12,14,18.
+- Cada subtotal é multiplicado por 2.
+- Faixas conforme PDF GAIPA/UFC enviado.
+- A fonte Artmed informa que a DASS-21 é de domínio público e dispensa autorização de uso desde que os autores sejam citados.
+- Item 21 >0 recebe observação clínica separada, sem transformar a DASS-21 em instrumento de avaliação de risco suicida.
+
+CORREÇÃO V24.1:
+- DASS-21 deduplicada no catálogo.
+- Mantida uma única entrada funcional.
+- JavaScript validado.
+- Entradas DASS-21 no catálogo: 1.
+
+
+NOVO NA V25:
+- EPDS — Escala de Edinburgh de Depressão Pós-Natal adicionada.
+- 10 itens completos conforme Anexo III do projeto enviado; últimos 7 dias; total 0–30.
+- Autores originais: Cox, Holden e Sagovsky (1987).
+- O site não apresenta um único corte como diagnóstico universal.
+- O protocolo de pesquisa enviado usa EPDS >=10 como indicativo de sofrimento psíquico relevante; isso é mostrado como referência operacional do protocolo.
+- Qualquer resposta >0 no item 10 (ideia de fazer mal a si mesma) gera alerta separado do total.
+- Verificação de duplicidade executada antes e depois da inclusão.
+- JavaScript validado sintaticamente.
+
+
+NOVO NA V26:
+- GAI — Inventário de Ansiedade Geriátrica adicionado exclusivamente em Psicogeriatria > Humor no Idoso.
+- 20 itens conforme o arquivo enviado; período: última semana.
+- Respostas: Discordo=0 e Concordo=1; total 0–20.
+- Ponto de corte 13 exibido conforme estudo GAI-BR citado no material, com sensibilidade 83,3% e especificidade 84,6%.
+- O resultado é apresentado como rastreamento, não como diagnóstico isolado.
+- Autoria e referências do material incluídas nas instruções.
+- Verificação de duplicidade executada antes e depois da inclusão.
+- JavaScript validado sintaticamente.
+
+
+NOVO NA V27:
+- HADS — Escala de Ansiedade e Depressão Hospitalar adicionada.
+- Formulário integral de 14 itens baseado no PDF HADS_PT enviado.
+- Período: última semana.
+- HADS-A: itens 1,3,5,7,9,11,13; HADS-D: itens 2,4,6,8,10,12,14.
+- Cada subescala varia de 0–21.
+- Interpretação brasileira usada: 0–8 ausência; >=9 presença de sintomas.
+- Resultado explicitamente apresentado como rastreamento, não diagnóstico clínico.
+- Verificação de duplicidade executada.
+- JavaScript validado sintaticamente.
+
+
+NOVO NA V28:
+- Y-BOCS — Yale-Brown Obsessive-Compulsive Scale adicionada em TOC.
+- 10 itens completos conforme o PDF enviado: 5 obsessões + 5 compulsões.
+- Cada item 0–4; obsessões 0–20; compulsões 0–20; total 0–40.
+- Instrução prévia para identificar obsessões e compulsões relevantes com o terapeuta.
+- Autoria/referência original e tradução citadas nas instruções.
+- Nenhuma faixa de gravidade foi inventada: o PDF enviado não fornece classificação por total.
+- Verificação de duplicidade executada antes e depois da inclusão.
+- JavaScript validado sintaticamente.
+
+
+NOVO NA V29:
+- Escala Traço-Ansiedade Infantil adicionada em Infância e Adolescência.
+- 34 itens completos recuperados do arquivo enviado.
+- Pontuação por item: 0 ausente, 1 raramente, 2 frequentemente, 3 sempre; total 0–102.
+- Ponto de corte 41 conforme a própria fonte; sensibilidade e especificidade 73,3%.
+- O resultado é apresentado como avaliação de reação ansiosa, não diagnóstico de transtorno ansioso.
+- Verificação de duplicidade e validação sintática concluídas.
+
+
+CORREÇÃO V30 — AUDITORIA:
+- Corrigida uma conclusão errada da auditoria anterior: Cornell/CSDD estava presente no catálogo.
+- Cornell/CSDD removida integralmente desta distribuição por cautela documental quanto à reprodução.
+- GDS/EDG-15 já estava corretamente em Psicogeriatria > Humor no Idoso; nenhuma duplicata foi criada.
+- Demais instrumentos preservados.
+- JavaScript validado sintaticamente após a remoção.
+
+
+V31 — CDR COMPLETO:
+- Seis domínios completos, cada um com CDR 0, 0,5, 1, 2 e 3.
+- Resultado segue a orientação do relatório: nível que aparece com mais frequência.
+- Empates são mostrados sem regra inventada.
+- MEEM e critérios medicamentosos das páginas 2–3 não foram misturados ao CDR.
+- JavaScript validado.
+
+
+V32 — SEGURANÇA DE PREENCHIMENTO:
+- Menus suspensos gerados pelo componente padrão foram substituídos por listas de respostas sempre visíveis.
+- Nenhuma alternativa vem pré-selecionada.
+- Todas as perguntas são obrigatórias.
+- O botão de cálculo é bloqueado enquanto houver questão sem resposta.
+- Questões não respondidas ficam destacadas e a tela rola até a primeira pendência.
+- Alteração aplicada globalmente às escalas que usam o componente padrão de respostas.
+- JavaScript validado sintaticamente.
+
+
+V33 — MEEM / MINIMENTAL:
+- MEEM adicionado em Psicogeriatria > Cognição e Demências.
+- Pontuação total 0–30: Orientação 10; Memória imediata 3; Atenção/cálculo 5; Evocação 3; Linguagem/execução 9.
+- Estímulos visuais incorporados diretamente ao site: relógio/caneta para nomeação, comando escrito FECHE OS OLHOS e desenho geométrico para cópia.
+- Na tarefa de cópia, o avaliador marca Não (0) ou Sim (1) para reprodução adequada.
+- Todas as respostas são visíveis, obrigatórias e sem pré-seleção.
+- Resultado bloqueado se houver qualquer item sem resposta.
+- JavaScript validado sintaticamente.
+
+
+V34 — ADENDO CDR / PCDT ALZHEIMER:
+- Adicionado ao CDR quadro de critérios CDR + MEEM + escolaridade para elegibilidade farmacológica no PCDT.
+- Até 4 anos: CDR 1/2 + MEEM 8–21 (inibidor AChE); CDR 2 + 8–15 (combinação com memantina); CDR 3 + 3–7 (memantina).
+- Mais de 4 anos: CDR 1/2 + MEEM 12–24; CDR 2 + 12–19; CDR 3 + 5–11.
+- O texto foi deliberadamente apresentado como critério de elegibilidade, não como autorização/prescrição automática.
+- O quadro não altera o cálculo do CDR.
+- Referência verificada em fonte oficial da SESAB (atualização 26/05/2026) e documentação da Conitec/PCDT.
+- JavaScript validado.
+
+
+V35 — MEEM: FIGURA CORRIGIDA + ADENDO PCDT:
+- A figura da tarefa de cópia foi substituída exatamente pela imagem de pentágonos sobrepostos enviada pelo usuário.
+- A imagem foi embutida no HTML para funcionamento totalmente offline.
+- O avaliador continua marcando explicitamente se a reprodução foi adequada: Não = 0; Sim = 1.
+- Foram adicionados ao MEEM os campos obrigatórios de escolaridade e CDR global para contextualização com o PCDT.
+- O resultado do MEEM agora informa quais faixas CDR + MEEM + escolaridade do quadro PCDT são compatíveis com os dados preenchidos.
+- Os campos do adendo não alteram a pontuação do MEEM (0–30).
+- O texto evita tratar elegibilidade como prescrição automática.
+- JavaScript validado sintaticamente.
+
+
+V36:
+- Removidas do MEEM as perguntas adicionais de escolaridade e CDR.
+- O quadro PCDT aparece somente após o resultado, como adendo informativo.
+- O adendo não altera nem bloqueia a pontuação do MEEM.
+- Figura correta dos pentágonos preservada.
+- JavaScript validado.
+
+
+V37 — ORIENTAÇÕES DO MEEM APRIMORADAS:
+- Orientações de aplicação revisadas conforme o anexo TelessaúdeRS/UFRGS.
+- Orientação temporal/espacial: somente primeira tentativa, sem dicas.
+- Registro: PENTE, RUA, AZUL; pontuação apenas da primeira tentativa; até 5 repetições para aprendizagem.
+- Atenção/cálculo: 100−7 com sequência esperada 93, 86, 79, 72, 65; alternativa MUNDO ao contrário conforme o anexo.
+- Evocação: PENTE, RUA, AZUL.
+- Linguagem: critérios detalhados para nomeação, repetição, comando de 3 etapas, leitura e escrita.
+- Cópia: critério explícito de dois pentágonos de 5 ângulos com intersecção correta de 4 ângulos.
+- Incluídos no resultado, como referência informativa, os pontos de corte por escolaridade apresentados no anexo.
+- Mantido o adendo PCDT após o resultado, sem perguntas extras.
+- JavaScript validado.
+
+
+V38 — MEEM: NOMEAÇÃO APRIMORADA:
+- Substituídos os desenhos infantis de relógio e caneta pelo visual realista aprovado.
+- O site orienta preferencialmente utilizar objetos reais disponíveis no ambiente.
+- As imagens passam a ser opcionais, como estímulo quando não houver objeto real.
+- Relógio e caneta são apresentados separadamente, um de cada vez.
+- Mantida pontuação de 1 ponto por objeto corretamente nomeado.
+- Demais orientações do MEEM, pentágonos e adendo PCDT foram preservados.
+- Imagem incorporada ao HTML para funcionamento offline.
+- JavaScript validado.
+
+
+V39 — DIMENSIONAMENTO DOS ESTÍMULOS DO MEEM:
+- Corrigido o problema visual da v38, que mostrava dentro de cada cartão parte do layout completo da imagem gerada.
+- Relógio e caneta agora são arquivos de imagem independentes e focados apenas no objeto.
+- Removidos da própria imagem os títulos e caixas de dica duplicados.
+- Altura máxima de 260 px em telas grandes e 210 px em telas menores, mantendo proporção original.
+- Continua sendo mostrado um objeto por vez.
+- Orientação para preferir objetos reais e usar as imagens apenas opcionalmente foi preservada.
+- JavaScript validado.
+
+
+V40 — CORREÇÃO DAS IMAGENS DO MEEM:
+- Corrigida a falha da v39 em que relógio e caneta apareciam como imagem quebrada ao abrir o index.html fora da pasta.
+- Relógio e caneta agora estão incorporados diretamente no HTML em base64.
+- O index.html não depende mais de caminhos externos para esses dois estímulos.
+- Mantido o dimensionamento compacto e responsivo.
+- Mantida a apresentação de um objeto por vez e a preferência por objetos reais da sala.
+- Pentágonos, orientações aprimoradas e adendo PCDT preservados.
+- JavaScript validado.
+
+
+V41 — COMANDO DE LEITURA DO MEEM:
+- “FECHE OS OLHOS” foi ampliado com tipografia responsiva.
+- Em telas grandes, a frase pode chegar a aproximadamente 5,8 rem.
+- Em celulares, o tamanho se adapta automaticamente para permanecer legível sem estourar a largura.
+- A instrução ao examinador foi separada visualmente do estímulo destinado ao paciente.
+- A questão de pontuação também fica separada, abaixo do estímulo.
+- Orientação explícita para o examinador não ler a frase em voz alta.
+- Demais conteúdos da v40 preservados.
+- JavaScript validado.
+
+
+V42 — MEEM / ATENÇÃO E CÁLCULO:
+- Versão operacional explicitada: adaptação brasileira de Bertolucci et al., conforme reprodução de Lourenço & Veras (Rev Saúde Pública, 2006).
+- Série de 7 é sempre aplicada primeiro.
+- Se Série de 7 = 5/5, MUNDO não aparece.
+- Se Série de 7 < 5/5, a tarefa MUNDO ao contrário aparece automaticamente.
+- O escore do domínio é o MAIOR entre Série de 7 e MUNDO, nunca a soma.
+- Removida a regra anterior de troca após dois erros.
+- Resultado registra qual tarefa determinou a pontuação.
+- Interface explica que existem outras padronizações brasileiras (ex.: Brucki et al., 2003, uso exclusivo do sete seriado), justificando a necessidade de declarar a versão adotada.
+- Demais recursos da v41 preservados.
+- JavaScript validado.
+
+
+V43 — SÉRIE DE 7 / ERRO ISOLADO:
+- Acrescentada orientação explícita de que cada uma das cinco subtrações é pontuada individualmente.
+- Um erro não anula automaticamente os acertos subsequentes.
+- Exemplo exibido: 93 correto, 85 incorreto, 79 correto, 72 correto, 65 correto = 4/5.
+- Mantido o fluxo da v42: se Série de 7 < 5/5, MUNDO aparece; o domínio usa o maior dos dois escores.
+- JavaScript validado.
+
+
+V44 — SÉRIE DE 7 / CADEIA APÓS ERRO:
+- Corrigida a orientação da v43.
+- Após uma resposta incorreta, o examinador NÃO corrige nem revela o valor esperado.
+- A próxima subtração parte do número efetivamente informado pelo paciente.
+- Cada operação subsequente matematicamente correta continua valendo 1 ponto.
+- Exemplo incorporado: 93 correto; 85 incorreto; 78 correto; 71 correto; 64 correto = 4/5.
+- A sequência 93, 86, 79, 72, 65 permanece apenas como referência quando não há erro.
+- Mantido o fluxo Bertolucci da v42/v43: se Série de 7 < 5/5, abre MUNDO; usa-se o maior escore, nunca a soma.
+- JavaScript validado.
+
+
+V45:
+- Orientação temporal/espacial alinhada à padronização de Brucki et al. (2003).
+- Temporal: dia do mês, mês, ano, dia da semana e hora aproximada (±1 hora).
+- Espacial: local específico, local geral, bairro/rua próxima, cidade e Estado.
+- Referências e justificativa metodológica adicionadas ao final do resultado.
+- CORREÇÃO CRÍTICA: na v44 a variável de evocação (ev) era usada no total sem ser definida, causando erro JavaScript ao clicar em Calcular. A v45 define explicitamente ev=answerValue("evoc") antes do total.
+- Fluxo Série de 7/MUNDO e demais melhorias preservados.
+- JavaScript validado com node --check.
+
+
+V46 — MoCA:
+- Adicionado MoCA em Psicogeriatria > Cognição e Demências.
+- O teste NÃO é reproduzido eletronicamente: sem questões, figuras, estímulos, respostas ou instruções protegidas.
+- Incluído acesso externo à página oficial do MoCA para seleção da versão em papel/idioma.
+- Incluído acesso às referências/validações oficiais.
+- Campo apenas para registro manual do escore total final (0–30), já corrigido pelo profissional.
+- Validação do campo impede vazio, valores fora de 0–30 e decimais.
+- Incluída contextualização do corte de 25 do estudo brasileiro de Memória et al. (2013), explicitando que a amostra tinha pelo menos 4 anos de escolaridade e que não se trata de diagnóstico automático.
+- Incluído alerta baseado em dados normativos brasileiros de Apolinario et al. (2018) sobre forte efeito da escolaridade e risco de falsos positivos com corte único.
+- Referências e aviso de direitos adicionados ao próprio módulo.
+- MEEM v45 e demais escalas preservados.
+- JavaScript validado com node --check.
+
+
+V47 — FLUÊNCIA VERBAL SEMÂNTICA:
+- Adicionada em Psicogeriatria > Cognição e Demências.
+- Modalidade implementada: animais em 60 segundos.
+- Cronômetro integrado de 60 s com iniciar, pausar e reiniciar.
+- Registro opcional das palavras em quatro intervalos: 0–15, 16–30, 31–45 e 46–60 s.
+- Correção clínica manual: respostas válidas, repetições e intrusões.
+- O sistema NÃO tenta classificar automaticamente nomes de animais; a decisão de validade permanece com o examinador.
+- Referência do material do projeto: <8 anos de escolaridade, pelo menos 9 animais; >=8 anos, pelo menos 13 animais.
+- Resultado apresentado como referência de rastreio, nunca diagnóstico automático.
+- Referência de Freitas et al., Tratado de Geriatria e Gerontologia (2002), incluída.
+- MEEM, MoCA e demais escalas da v46 preservados.
+- JavaScript validado com node --check.
+
+
+V48 — HADS
+- HADS adicionada em Psicogeriatria > Humor no Idoso.
+- Registro apenas dos subescores HADS-A e HADS-D (0–21); os 14 itens não são reproduzidos.
+- Classificação de referência: 0–7 improvável/não provável; 8–10 possível/limítrofe; 11–21 provável.
+- Validação de campos e referências original/brasileira incluídas.
+- Todos os módulos da v47 preservados.
+- JavaScript validado.
+
+
+V49 — BBRC
+- Adicionada BBRC em Psicogeriatria > Cognição e Demências.
+- Referência operacional: PDF "Bateria breve rastreio (1).pdf" fornecido pelo usuário.
+- Etapas: nomeação, memória incidental, memória imediata, aprendizado, fluência verbal, memória tardia, reconhecimento e desenho do relógio.
+- Anexos 1 e 2 incorporados a partir das páginas 4 e 5 do PDF fornecido.
+- Fluência verbal com cronômetro de 60 s e registro em quatro intervalos.
+- Relógio: 11h10 e critérios de Shulman 0–5, conforme o PDF.
+- Alternativa presidente/governador/prefeito aparece somente quando marcado que o relógio não foi realizado.
+- Pontos de corte do formulário: incidental <=4; imediata <=6; aprendizado <=6; tardia <=5; reconhecimento <=7; fluência <=8 analfabetos, <=11 para 1–7 anos, <=12 para >=8 anos.
+- Resultados descritos como rastreio, não diagnóstico.
+- Todos os módulos da v48 preservados.
+- JavaScript validado com node --check.
+
+
+V49.1 — CORREÇÃO DAS PRANCHAS DA BBRC
+- Corrigido o problema em que Anexo 1 e Anexo 2 apareciam como imagens quebradas.
+- As duas pranchas agora estão incorporadas diretamente no index.html em Base64.
+- Não dependem mais de caminhos relativos ou arquivos PNG externos para serem exibidas.
+- Mantido todo o conteúdo e cálculo da v49.
+- JavaScript validado após a alteração.
+
+
+V49.2 — PRANCHAS BBRC LIMPAS
+- Anexo 1: removidos cabeçalho, moldura verde e rodapé, preservando os 10 estímulos.
+- Anexo 2: substituído pela referência visual enviada pelo usuário e recortado para manter somente os 20 estímulos.
+- Removidos cabeçalho verde, etiqueta de anexo, moldura e número de página.
+- As imagens continuam incorporadas diretamente no index.html para funcionamento local.
+- Nenhum estímulo foi intencionalmente reorganizado ou redesenhado.
+- JavaScript validado após a alteração.
+
+V49.3 — BBRC REGISTRO ITEM A ITEM
+- Nomeação, memória incidental, memória imediata, aprendizado, memória tardia e reconhecimento agora usam marcação individual dos 10 estímulos.
+- Soma automática do escore em tempo real.
+- Exibição automática dos itens marcados e não marcados.
+- Memória incidental registra também a ordem de evocação conforme a sequência dos cliques.
+- Campos de texto separados para intrusões.
+- Reconhecimento registra alvos reconhecidos e falsos reconhecimentos/distratores separadamente.
+- Resumo final informa escores e quais itens foram ou não recuperados.
+- Interface responsiva para celular.
+- Pranchas e critérios da v49.2 preservados.
+- JavaScript validado.
+
+V49.4 — EXEMPLOS DIDÁTICOS DO RELÓGIO
+- Painel expansível com seis exemplos esquemáticos originais (Shulman 5/5 a 0/5).
+- Cada exemplo acompanha descrição textual do critério.
+- Quadro "O que observar": mostrador, números, organização visuoespacial, ponteiros e 11h10.
+- Aviso para não usar semelhança visual rígida e não misturar sistemas de pontuação.
+- Registro item a item da BBRC preservado.
+- JavaScript validado.
+
+V49.5 — REVISÃO DIDÁTICA DO RELÓGIO
+- Diferenciado visualmente o exemplo Shulman 4/5 do 5/5.
+- 5/5 permanece globalmente organizado e correto.
+- 4/5 agora mostra irregularidade visuoespacial leve e perceptível na distribuição dos números, mantendo o relógio reconhecível e a intenção do horário.
+- Incluída explicação comparativa 5/5 versus 4/5.
+- Mantido o alerta de que os desenhos são exemplos didáticos e o critério textual deve orientar a pontuação.
+- Demais módulos e registros da BBRC preservados.
+- JavaScript validado.
+
+V49.6 — RELÓGIO: NÚMEROS FORA DO CÍRCULO
+- Incluído exemplo alternativo 4/5 com todos os números fora do círculo, mas ordenados e com horário preservado.
+- Regra prática: números fora do círculo impedem 5/5 perfeito e são tratados como erro visuoespacial menor quando isolados.
+- Alerta: alterações adicionais podem justificar 3/5 ou menos, conforme o conjunto.
+- Critério textual continua prevalecendo sobre semelhança visual.
+- JavaScript validado.
+
+V49.7 — ORDEM DA BBRC CORRIGIDA
+- Corrigida a sequência operacional da bateria.
+- Após Fluência Verbal vem imediatamente o Teste do Desenho do Relógio.
+- Depois: Memória Tardia (5 minutos) e Reconhecimento.
+- Numeração visual ajustada: 5 Fluência, 6 Relógio, 7 Memória Tardia, 8 Reconhecimento.
+- Conteúdo, pontuação, exemplos do relógio e registro item a item preservados.
+- JavaScript validado.
+
+V49.8 — HADS DUPLICADA CORRIGIDA
+- Confirmado que havia duas entradas HADS e duas implementações openHads.
+- Removida a duplicata.
+- Mantida somente a versão de registro HADS-A/HADS-D sem reprodução dos 14 itens.
+- Confirmado: 1 cartão HADS, 1 dispatch e 1 função openHads.
+- BBRC v49.7 e demais módulos preservados.
+- JavaScript validado.
+
+V50 — PHQ-9
+- Adicionado PHQ-9 em Adultos > Humor e Ansiedade.
+- 9 itens, período de duas semanas, respostas 0–3 e soma automática 0–27.
+- Categorias de frequência alinhadas ao estudo brasileiro de Santos et al. (2013): nenhum dia; menos de uma semana; uma semana ou mais; quase todos os dias.
+- Classificação de gravidade: 0–4 mínima; 5–9 leve; 10–14 moderada; 15–19 moderadamente grave; 20–27 grave.
+- Mostra separadamente o ponto de corte >9 estudado na população brasileira.
+- Impacto funcional registrado separadamente e não somado ao escore.
+- Item 9 positivo gera alerta clínico específico; o sistema não infere automaticamente risco suicida pelo escore.
+- Impede cálculo com itens não respondidos.
+- Base v49.8 preservada.
+- JavaScript validado.
+
+V51 — GAD-7 AUDITADO
+- Removidas duas entradas GAD-7 legadas encontradas na base v50.
+- Mantida exatamente uma implementação GAD-7.
+- 7 itens; duas semanas; 0–3; total 0–21.
+- Gravidade: 0–4 mínima, 5–9 leve, 10–14 moderada, 15–21 grave.
+- Limiar >=10 destacado sem diagnóstico automático.
+- Impacto funcional separado.
+- Referências original e brasileira.
+- JavaScript validado.
+
+V52 — AUDIT
+- AUDIT completo adicionado em Adultos > Álcool e Substâncias.
+- 10 itens obrigatórios; total 0–40.
+- Itens 1–8: 0–4; itens 9–10: 0/2/4.
+- Zonas: 0–7, 8–15, 16–19, 20–40, apresentadas como orientação de rastreamento.
+- Subtotais informativos: consumo 1–3, indicadores relacionados à dependência 4–6, consequências/problemas 7–10.
+- Referência OMS/Babor e referência à validação brasileira.
+- Nota de uso científico/educacional/assistencial não comercial e ausência de endosso da OMS.
+- GAD-7, PHQ-9 e demais módulos preservados.
+- JavaScript validado.
+
+V53 — SRQ-20
+- SRQ-20 completo adicionado em Adultos > Rastreamento Psiquiátrico.
+- 20 itens Sim/Não; total 0–20.
+- Bloqueio de cálculo se houver resposta ausente.
+- Limiar brasileiro 7/8 conforme Gonçalves, Stein & Kapczinski (2008).
+- Item 17 positivo gera alerta separado para avaliação clínica de segurança, sem inferência automática de risco pelo escore.
+- Referências brasileiras clássica e de revalidação incluídas.
+- AUDIT, GAD-7, PHQ-9 e demais módulos preservados.
+- JavaScript validado.
+
+V54 — GDS-15 / EDG-15 BRASILEIRA
+- Novo módulo revisado em Psicogeriatria > Humor no Idoso.
+- 15 itens Sim/Não; total 0–15.
+- Itens 1,5,7,11,13 pontuam com Não; demais com Sim.
+- Corte 5/6: >=6 rastreamento positivo.
+- Referências brasileiras Almeida & Almeida (1999) e Paradela et al. (2005).
+- Escalas anteriores preservadas.
+- JavaScript validado.
+
+V55 — WHO ASSIST
+- Adicionado em Adultos > Álcool e Substâncias.
+- Fluxo em duas etapas: uso na vida e envolvimento por substância.
+- Escores Q2–Q7 calculados separadamente.
+- Q1 e Q8 fora do escore; Q5 não pontua para tabaco.
+- Cortes: álcool 0–10 / 11–26 / >=27; demais 0–3 / 4–26 / >=27.
+- Uso injetável recebe alerta clínico separado.
+- AUDIT e módulos anteriores preservados.
+- JavaScript validado.
+
+V56 — ASRS-v1.1 SCREENER 6 ITENS
+- Adicionado em Adultos > TDAH.
+- Versão brasileira oficial do screener de 6 questões.
+- Referência temporal: últimos 6 meses; destinado a >=18 anos.
+- Cinco respostas por item: Nunca, Raramente, Algumas vezes, Frequentemente, Muito frequentemente.
+- Algoritmo categórico oficial: itens 1–3 críticos a partir de Algumas vezes; itens 4–6 a partir de Frequentemente.
+- >=4 respostas críticas = rastreamento positivo; não é soma simples 0–24.
+- Aviso explícito de que rastreio não estabelece diagnóstico.
+- Copyright/atribuição OMS e referência brasileira incluídos.
+- ASRS de 18 itens não reproduzido.
+- Módulos anteriores preservados; JavaScript validado.
+
+V57 — SNAP-IV BRASILEIRO
+- Adicionado em Infância e Adolescência > TDAH e Comportamento Opositivo.
+- 26 itens: 9 desatenção, 9 hiperatividade/impulsividade, 8 oposição.
+- Respostas 0–3: Nem um pouco / Só um pouco / Bastante / Demais.
+- Informante obrigatório: responsável ou professor; resultados não são misturados.
+- Soma, média e contagem de respostas Bastante/Demais por domínio.
+- Forma parental: referências brasileiras (desatenção 1,72/16/6; hiperatividade 1,17/11/4; oposição 0,81/7/2).
+- Forma professor: cortes parentais não aplicados automaticamente.
+- Aviso explícito de que rastreamento não equivale a diagnóstico.
+- Módulos anteriores preservados; JavaScript validado.
+
+V58 — 4AT / CONTEXTO HOSPITALAR
+- Criada categoria Contexto Hospitalar > Delirium e Cognição.
+- 4AT implementado com quatro componentes: Alerta, AMT4, Atenção e Mudança aguda/curso flutuante.
+- Escore automático 0–12.
+- Interpretação: 0; 1–3; >=4.
+- Alerta clínico separado para resultado >=4.
+- Mantida possibilidade de pontuar componentes cognitivos quando não testáveis conforme algoritmo.
+- Licença CC BY 4.0 e atribuição incluídas.
+- Não rotulado como versão brasileira validada sem evidência específica.
+- Módulos anteriores preservados; JavaScript validado.
+
+V59 — CIWA-Ar
+- Contexto Hospitalar > Abstinência.
+- 10 itens; escore 0–67.
+- Checagem prévia de confiabilidade da comunicação/participação (não pontuada).
+- Classificação brasileira adotada: 0–9 leve, 10–18 moderada, >18 grave.
+- Alerta quando comunicação é insuficiente e quando escore >18.
+- Não gera esquema farmacológico automático.
+- Referências Sullivan et al. (1989) e Ministério da Saúde.
+- 4AT e todos os módulos anteriores preservados.
+- JavaScript validado.
+
+V60 — BUSH-FRANCIS / CATATONIA
+- Contexto Hospitalar > Catatonia.
+- Versão brasileira validada referenciada (Nunes et al., 2017).
+- Etapa 1: ICBF/BFCSI, primeiros 14 itens; presença = pontuação >0; >=2 sinais = rastreamento positivo.
+- Etapa 2: ECBF/BFCRS, 23 itens para gravidade; reaproveita automaticamente os 14 primeiros registros.
+- Itens dicotômicos 13, 17–21 preservam pontuação 0/3.
+- Exibe sinais presentes e escore total de gravidade sem inventar ponto de corte diagnóstico da soma.
+- CIWA-Ar, 4AT e módulos anteriores preservados.
+- JavaScript validado.
+
+V61 — BUSH-FRANCIS REVISADA
+- Corrigida a graduação textual de todos os 23 itens: cada valor 0–3 agora exibe seu critério clínico.
+- Itens dicotômicos 13 e 17–21 permanecem 0/3, agora explicitamente descritos como Ausente/Presente.
+- Incluído em cada item o painel expansível “Como avaliar este item?”.
+- Orientações de aplicação baseadas nos critérios originais BFCRS e nos recursos educacionais da University of Rochester desenvolvidos em colaboração com Dr. Francis.
+- Item 23 agora explicita: 0 ausente; 1 parâmetro; 2 parâmetros; 3 ou mais parâmetros autonômicos alterados.
+- Item 22 agora explicita frequência/periculosidade da combatividade.
+- Demais módulos preservados.
+- JavaScript validado.
+
+V62 — COWS
+- Contexto Hospitalar > Abstinência.
+- 11 itens, escore 0–47.
+- Graduações originais não uniformes preservadas (ex.: 0/1/3/5; 0/1/2/5; 0/3/5).
+- Cada alternativa apresenta número + critério clínico.
+- Cada item possui painel “Como avaliar este item?”.
+- Faixas: 5–12 leve; 13–24 moderada; 25–36 moderadamente grave; >36 grave.
+- Tradução em português para apoio; não rotulada como versão brasileira formalmente validada.
+- Não gera prescrição farmacológica automática.
+- Bush-Francis v61 e módulos anteriores preservados.
+- JavaScript validado.
+
+V63 — RASS
+- Contexto Hospitalar > Agitação e Sedação.
+- Escala completa de +4 a -5.
+- Fluxo de aplicação: observação -> estímulo verbal -> estímulo físico.
+- Número + denominação + critério clínico em todos os níveis.
+- Ajuda de aplicação visível em cada etapa.
+- Alertas em +3/+4 e -4/-5.
+- Sem diagnóstico etiológico ou prescrição automática.
+- Todos os módulos anteriores preservados.
+- JavaScript validado.
+
+V64 — AJUSTE VISUAL DA RASS
+- Corrigido o problema de opções comprimidas em quatro colunas.
+- Pontuação RASS agora aparece em lista vertical de largura total.
+- Cada linha separa claramente: botão | escore | nome do nível | descrição clínica.
+- Layout responsivo para desktop, tablet e celular.
+- Conteúdo, pontuação e algoritmo da RASS não foram alterados.
+- Demais escalas preservadas.
+- JavaScript validado.
+
+V65 — AIMS
+- Contexto Hospitalar > Efeitos adversos de antipsicóticos.
+- Procedimento de exame guiado.
+- 7 territórios motores (0–4), avaliação global e informações odontológicas.
+- Layout vertical legível, seguindo o padrão visual corrigido da RASS.
+- Resultado registra soma motora 0–28, maior gravidade regional, itens globais e regiões afetadas.
+- Sem ponto de corte diagnóstico automático para discinesia tardia.
+- RASS v64 e módulos anteriores preservados.
+- JavaScript validado.
+
+V66 — UX / CURADORIA
+- MENTIUM permanece codinome provisório.
+- Busca rápida e filtros clínicos.
+- Nova proposta: Aplicar. Pontuar. Interpretar.
+- Compromissos: gratuito, sem cadastro, curadoria e aplicação orientada.
+- Seção Sobre o projeto.
+- Preparação GitHub/Vercel: .gitignore, vercel.json e README.md.
+- Nenhum armazenamento de dados clínicos.
+- Escalas e algoritmos da v65 preservados.
+
+V67 — CABEÇALHO UNIFICADO
+- Removido o segundo cabeçalho/buscador criado na v66.
+- Mantido apenas o cabeçalho original do site, agora rebatizado como MENTIUM.
+- Título: Instrumentos essenciais para a prática psiquiátrica.
+- Subtítulo: Aplicar. Pontuar. Interpretar. • Gratuito, sem cadastro e sem limite de aplicações.
+- Mantidos um único campo de busca e uma única área de filtros.
+- Todas as escalas e algoritmos clínicos preservados.
+
+
+V76 — AUDITORIA E CORREÇÕES (base: v71)
+- Testadas automaticamente todas as escalas: abrir, preencher, calcular.
+- RESTAURADOS os textos de 10 escalas que abriam em branco desde algum ponto entre v30 e v44: MADRS, HAM-A, Zarit-7, NPI, DAD, Blessed, ECAP/BES, ESV/SWLS, ASRS-18, DASS-21. Conteúdo recuperado integralmente da v30 (25/09/2026).
+- DASS-21: removida a segunda definição que sobrescrevia a versão completa; mantida a versão com alerta do item 21.
+- Fried, 10-CS e Blessed: corrigido erro ao calcular (liam respostas no formato anterior à v32).
+- Hachinski, Katz e Lawton: implementado o cálculo, que nunca existiu.
+  Hachinski: <=4 / 5–6 / >=7 (Hachinski 1975; Rosen 1980). Katz: nº de ABVD independentes + lista das dependentes. Lawton: 9–27, sem ponto de corte.
+- SEGURANÇA: o resultado do paciente anterior não permanece mais na tela ao abrir outra escala ou voltar ao início.
+- SEGURANÇA: o botão Calcular das escalas simples executava o cálculo da escala especial aberta antes (ex.: Katz mostrava ESAS). Corrigido.
+- EAM-BR: as respostas da aplicação anterior não permanecem mais ao reabrir a escala.
+- Copiar resultado passa a copiar o resultado exibido de qualquer escala.
+- Tinetti: item 7 (olhos fechados) agora 0–1, como na POMA original; equilíbrio volta a somar no máximo 16 e o total no máximo 28.
+- Cabeçalho das escalas mostra a categoria real (antes, todas exibiam "PSICOGERIATRIA").
+- Removidas entradas legadas duplicadas: GDS-15 antiga (cortes diferentes da EDG-15 brasileira), SNAP-IV antiga, ASSIST v3.1 antiga, Fluência Verbal antiga.
+- Categorias padronizadas: SRQ-20 em Rastreamento geral; GAD-7, HAM-A, LSAS, Agorafobia e Pânico em Ansiedade; PHQ-9, EPDS, MADRS, HAM-D e PDAS em Humor › Depressão; EAM-BR e HCL-32 em Bipolaridade; AUDIT e ASSIST em Substâncias; ASRS em TDAH.
+- Todas as escalas de Psicogeriatria agora têm subcategoria (FAST, Hachinski, Relógio, Katz, Lawton, Barthel, Rankin, SARC-F, Sarcopenia, Karnofsky, ECOG).
+- Teste final: 63 escalas, nenhum erro JavaScript, todas geram resultado; sem rolagem horizontal no celular (375 px).
+
+
+V77 — CONFERÊNCIA COM "PSICOGERIATRIA - INSTRUMENTO DE AVALIAÇÃO" (Santa Casa / Dom Pedro II)
+- CORREÇÃO CRÍTICA: Barthel, SARC-F + CP, Algoritmo de Sarcopenia, LSAS, NPI e ESAS davam sempre o mesmo resultado desde a v32 (o cálculo não lia menus, campos numéricos e controles deslizantes). Ex.: Barthel sempre 0/100; SARC-F sempre 10/20. Corrigido na função comum de leitura de respostas.
+- SARC-F + CP: não calcula mais sem a circunferência da panturrilha (antes somava 10 pontos quando o campo ficava vazio).
+- Pfeffer: incluídas as opções do PDF "Nunca o fez, mas poderia (0)" e "Nunca o fez e agora teria dificuldade (1)".
+- APGAR: escore 3 passa a "acentuada disfunção" (0–3), como em Smilkstein 1978; o PDF deixava o 3 sem faixa.
+- Hachinski: interpretação agora cita a folha (versão Nitrini, 1993): >=7 vascular; <=4 Alzheimer; 5–6 não classificado na folha.
+- Conferidos contra o PDF, sem alteração: FAST, Barthel (faixas), CDR, Karnofsky, CES-D (itens invertidos 4, 8, 12, 16), Fried (tabela de preensão por IMC), Katz, Lawton, MEEM, SARC-F, Fluência Verbal, Relógio, 10-CS, ECOG, ESAS, Rankin, Algoritmo de Sarcopenia.
+- Tinetti: o próprio PDF tem 3 opções no item 7 e soma 17 no equilíbrio, contradizendo o "Máx. 16"; mantida a correção da v76 (item 7 = 0/1, como na POMA original).
+- Teste final: 63 escalas sem erro JavaScript.
+
+
+V78 — DIREITOS AUTORAIS (decisões da responsável)
+- MEEM mantido completo por decisão da responsável pelo projeto.
+- HADS restaurada com os 14 itens (domínio público segundo Gorenstein et al., Artmed, p. 458): HADS-A itens ímpares, HADS-D itens pares, 0–21 cada; faixas de Zigmond & Snaith (0–7 / 8–10 / 11–21) e referência brasileira ≥9 (Botega et al., 1995). Não calcula com itens em branco.
+- Pesquisa de direitos de NPI, Zarit, CDRS-R, Y-BOCS, DAD e ECAP/BES registrada em DIREITOS-AUTORAIS.md; nenhuma dessas escalas foi alterada ainda.
+
+
+V79 — INSTRUMENTOS PROTEGIDOS: SÓ REGISTRO DO ESCORE
+- NPI, Zarit-7, CDRS-R, Y-BOCS, DAD e ECAP/BES deixaram de reproduzir itens, âncoras e grades de pontuação.
+- Os textos dessas escalas foram removidos do arquivo (não apenas ocultados).
+- Cada módulo agora traz: orientação de uso, campos para registrar o resultado obtido na versão autorizada, validação de faixa, interpretação já existente e referências com o detentor dos direitos.
+  NPI: total 10 domínios (0–120) + opcionais sono/apetite, desgaste do cuidador e nº de domínios.
+  Zarit-7: total 7–35; faixas da fonte (até 14 / 15–21 / >22; 22 sem classificação).
+  CDRS-R: total 17–113; corte 40; marcação de ideação suicida pontuada gera alerta.
+  Y-BOCS: obsessões 0–20 + compulsões 0–20; total calculado; sem faixas.
+  DAD: tarefas independentes / aplicáveis e percentual.
+  ECAP/BES: total 0–46; faixas ≤17 / 18–26 / ≥27.
+- Fundamentação em DIREITOS-AUTORAIS.md. Teste final: 63 escalas, nenhum erro JavaScript.
