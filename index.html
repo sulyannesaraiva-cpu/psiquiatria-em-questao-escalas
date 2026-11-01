@@ -2372,7 +2372,9 @@ window.addEventListener("load",()=>{try{const id=new URLSearchParams(location.se
   const cards=document.getElementById("cards");
   const libTitle=document.querySelector("#libraryPanel .library-title");
   if(cards&&libTitle&&!document.getElementById("libView")){
-    const getView=()=>{try{return localStorage.getItem("pc-lib-view")||"cards";}catch(e){return "cards";}};
+    /* Sem escolha salva: lista compacta em telas até 1100 px (tablet e celular), cartões no computador. */
+    const defaultView=()=>innerWidth<1100?"list":"cards";
+    const getView=()=>{try{return localStorage.getItem("pc-lib-view")||defaultView();}catch(e){return defaultView();}};
     libTitle.insertAdjacentHTML("beforeend",`<div id="libView" class="lib-view" role="group" aria-label="Exibição"><button type="button" data-lib-view="cards">Cartões</button><button type="button" data-lib-view="list">Lista</button></div>`);
     const apply=()=>{const v=getView();cards.classList.toggle("list",v==="list");document.querySelectorAll("#libView [data-lib-view]").forEach(b=>{const on=b.dataset.libView===v;b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on));});};
     document.getElementById("libView").addEventListener("click",e=>{const b=e.target.closest("[data-lib-view]");if(!b)return;try{localStorage.setItem("pc-lib-view",b.dataset.libView);}catch(err){}apply();});
@@ -2428,7 +2430,7 @@ body.apply-bar-on .wrap{padding-bottom:84px}
 .lib-view button{min-height:32px;padding:0 12px;border:0;border-radius:8px;background:none;color:#4f6469;font-weight:700;cursor:pointer}
 .lib-view button.on{background:#0b6b70;color:#fff}
 #cards.list{grid-template-columns:1fr!important;gap:8px}
-@media(min-width:1100px){#cards.list{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(min-width:700px){#cards.list{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 #cards.list .card{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:center;min-height:0;padding:12px 16px}
 #cards.list .card>*{grid-column:1}
 #cards.list .card h2{font-size:1.02rem;margin:2px 0}
