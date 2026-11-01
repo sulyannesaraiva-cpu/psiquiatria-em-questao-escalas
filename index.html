@@ -2278,4 +2278,6 @@ async function copyEEM(){
  catch(e){out.select();document.execCommand("copy");}
 }
 document.addEventListener("DOMContentLoaded",initEEM);
+/* Link direto para uma escala: ?escala=npi (usado pelo Laboratório do Psiquiatria em Questão). */
+window.addEventListener("load",()=>{try{const id=new URLSearchParams(location.search).get("escala");if(id&&instruments.some(x=>x.id===id))openInstrument(id);}catch(e){}});
 </script></body></html>
