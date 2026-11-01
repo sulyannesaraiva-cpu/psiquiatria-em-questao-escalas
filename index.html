@@ -420,7 +420,7 @@ scaleGuides.cdrfull={author:"Clinical Dementia Rating (CDR). Ajustado conforme o
 scaleGuides.meem={author:"Mini Exame do Estado Mental (MEEM). Orientações de aplicação adaptadas do material TelessaúdeRS/UFRGS (2016), que referencia Duncan et al., Medicina Ambulatorial, 4ª ed., 2013.",who:"Aplicação por avaliador. Pontue as respostas conforme as instruções de cada domínio e considere escolaridade na interpretação.",period:"Estado cognitivo no momento da aplicação.",how:"Versão operacional adotada: tradução/adaptação brasileira de Bertolucci et al., conforme tabela reproduzida por Lourenço & Veras (Rev Saúde Pública, 2006). Em Atenção e Cálculo, aplicar primeiro a série de 7. Se o escore for menor que 5/5, aplicar também MUNDO ao contrário e considerar o maior dos dois escores. Cada subtração é pontuada individualmente: um erro isolado não anula acertos subsequentes. Após um erro, as próximas subtrações devem partir do valor informado pelo paciente, sem correção ou revelação do resultado esperado. A escolha evita a regra arbitrária de trocar após dois erros e mantém explícita a versão utilizada. Há outras padronizações brasileiras, como Brucki et al. (2003), que propõem uso exclusivo do sete seriado; por isso a versão adotada deve ser registrada.",time:"Aplicação breve.",purpose:"Rastreio cognitivo, máximo 30 pontos. O resultado isolado não estabelece diagnóstico e deve ser interpretado conforme escolaridade e contexto clínico."};
 function guideFor(x){
  const g=scaleGuides[x.id]||{author:"Autoria/versão específica ainda não confirmada nos materiais recuperados.",who:"Aplicação por profissional de saúde conforme o instrumento.",period:"Observe o período indicado em cada item.",how:"Leia as instruções antes de iniciar, mantenha formulação neutra e registre a opção que melhor corresponde à resposta ou desempenho observado.",time:"Não especificado.",purpose:x.description||"Instrumento clínico de avaliação."};
- return `<details class="notice application-guide"${matchMedia("(max-width: 860px)").matches?"":" open"}><summary><strong>Como aplicar</strong><span class="guide-hint">objetivo, quem responde, período e tempo</span></summary><p><b>Objetivo:</b> ${g.purpose}</p><p><b>Quem responde / aplicação:</b> ${g.who}</p><p><b>Período:</b> ${g.period}</p><p><b>Orientação ao aplicador:</b> ${g.how}</p><p><b>Tempo:</b> ${g.time}</p><p class="small"><b>Autoria / origem:</b> ${g.author}</p></details>`;
+ return `<details class="notice application-guide"${(()=>{try{return localStorage.getItem("pc-guide-open")==="1"}catch(e){return false}})()?" open":""}><summary><strong>Como aplicar</strong><span class="guide-hint">objetivo, quem responde, período e tempo</span></summary><p><b>Objetivo:</b> ${g.purpose}</p><p><b>Quem responde / aplicação:</b> ${g.who}</p><p><b>Período:</b> ${g.period}</p><p><b>Orientação ao aplicador:</b> ${g.how}</p><p><b>Tempo:</b> ${g.time}</p><p class="small"><b>Autoria / origem:</b> ${g.author}</p></details>`;
 }
 function injectGuide(){
  const h=document.getElementById("assessmentHead"); if(!h||!current)return;
@@ -2303,7 +2303,7 @@ window.addEventListener("load",()=>{try{const id=new URLSearchParams(location.se
   let bar=document.createElement("div");
   bar.id="applyBar";bar.className="apply-bar no-print";bar.hidden=true;
   bar.innerHTML='<span class="apply-count"></span><button type="button" class="btn primary apply-go">Calcular</button>';
-  document.body.appendChild(bar);
+  (assessment||document.body).appendChild(bar);
   bar.querySelector(".apply-go").addEventListener("click",()=>{
     const b=scaleCalcButton();if(!b)return;
     const missing=radioGroups().find(g=>!document.querySelector(`#questions input[name="${CSS.escape(g)}"]:checked`));
@@ -2350,9 +2350,50 @@ window.addEventListener("load",()=>{try{const id=new URLSearchParams(location.se
     const vis=id=>{const el=document.getElementById(id);return el&&!el.classList.contains("hidden");};
     const key=vis("eemView")?"eem":(vis("libraryView")||vis("assessment"))?"lib":"home";
     nav.querySelectorAll("[data-bn]").forEach(b=>b.classList.toggle("active",b.dataset.bn===key));
+    /* Menu lateral: destaca a tela aberta (antes ficava sempre em "Início"). */
+    const links=[...document.querySelectorAll(".sidebar .side-link")];
+    const onclickOf=l=>l.getAttribute("onclick")||"";
+    let target=null;
+    if(key==="eem")target=links.find(l=>/showEEM/.test(onclickOf(l)));
+    else if(key==="lib"){
+      if(vis("assessment")&&current)target=links.find(l=>onclickOf(l).includes(`quickOpen('${current.id}')`));
+      target=target||links.find(l=>/showLibrary/.test(onclickOf(l)));
+    }else target=links.find(l=>/goHome/.test(onclickOf(l)));
+    links.forEach(l=>l.classList.toggle("selected",l===target));
   }
   syncBottomNav();
   window.syncBottomNav=syncBottomNav;
+  ["quickOpen"].forEach(fn=>{if(typeof window[fn]==="function"){const base=window[fn];window[fn]=function(){const r=base.apply(this,arguments);setTimeout(syncBottomNav,0);return r;};}});
+
+  /* "Como aplicar": lembra se a pessoa deixou aberto. */
+  document.addEventListener("toggle",e=>{if(e.target.matches&&e.target.matches("details.application-guide")){try{localStorage.setItem("pc-guide-open",e.target.open?"1":"0");}catch(err){}}},true);
+
+  /* Biblioteca: cartões ou lista compacta; título repetido escondido. */
+  const cards=document.getElementById("cards");
+  const libTitle=document.querySelector("#libraryPanel .library-title");
+  if(cards&&libTitle&&!document.getElementById("libView")){
+    const getView=()=>{try{return localStorage.getItem("pc-lib-view")||"cards";}catch(e){return "cards";}};
+    libTitle.insertAdjacentHTML("beforeend",`<div id="libView" class="lib-view" role="group" aria-label="Exibição"><button type="button" data-lib-view="cards">Cartões</button><button type="button" data-lib-view="list">Lista</button></div>`);
+    const apply=()=>{const v=getView();cards.classList.toggle("list",v==="list");document.querySelectorAll("#libView [data-lib-view]").forEach(b=>{const on=b.dataset.libView===v;b.classList.toggle("on",on);b.setAttribute("aria-pressed",String(on));});};
+    document.getElementById("libView").addEventListener("click",e=>{const b=e.target.closest("[data-lib-view]");if(!b)return;try{localStorage.setItem("pc-lib-view",b.dataset.libView);}catch(err){}apply();});
+    apply();
+  }
+
+  /* Busca do Início: sugestões enquanto digita. */
+  const homeInput=document.querySelector("#homeQuick input");
+  if(homeInput&&!document.getElementById("homeHits")){
+    homeInput.insertAdjacentHTML("afterend",'<div id="homeHits" class="home-hits" role="listbox" hidden></div>');
+    const hits=document.getElementById("homeHits");
+    const norm=s=>String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+    homeInput.addEventListener("input",()=>{
+      const q=norm(homeInput.value.trim());
+      if(q.length<2){hits.hidden=true;hits.innerHTML="";return;}
+      const found=instruments.filter(x=>norm(`${x.name} ${x.category||""} ${x.subcategory||""} ${x.description||""}`).includes(q)).slice(0,7);
+      hits.hidden=!found.length;
+      hits.innerHTML=found.map(x=>`<button type="button" role="option" onclick="openInstrument('${x.id}')"><strong>${x.name}</strong><small>${x.category||""}${x.subcategory?" · "+x.subcategory:""}</small></button>`).join("")+(found.length?`<button type="button" class="home-hits-all">Ver todas na Biblioteca →</button>`:"");
+    });
+    hits.addEventListener("click",e=>{if(e.target.closest(".home-hits-all")){homeInput.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter",bubbles:true}));}hits.hidden=true;});
+  }
   /* Exame psíquico: depois de gerar, leva ao texto pronto. */
   document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("#eemGenerate"))setTimeout(()=>document.getElementById("eemOutput")?.scrollIntoView({block:"center"}),60);});
   const baseOpen2=openInstrument;openInstrument=function(){const r=baseOpen2.apply(this,arguments);setTimeout(syncBottomNav,0);return r;};
@@ -2367,7 +2408,42 @@ window.addEventListener("load",()=>{try{const id=new URLSearchParams(location.se
 .apply-bar.complete .apply-count{color:#0b6b70}
 .apply-bar .btn{min-height:44px;padding:0 18px}
 body.apply-bar-on .wrap{padding-bottom:84px}
-@media(min-width:861px){.apply-bar{left:auto;right:24px;bottom:20px;border:1px solid #dce5e6;border-radius:14px;max-width:420px}}
+/* Computador: a barra acompanha a escala na largura dela, embaixo, sem cobrir as opções. */
+@media(min-width:861px){
+  .apply-bar{position:sticky;left:auto;right:auto;bottom:16px;margin-top:16px;border:1px solid #dce5e6;border-radius:14px}
+  body.apply-bar-on .wrap{padding-bottom:0}
+  /* Seletor de áreas empilhado no menu lateral (três nomes não cabem lado a lado). */
+  .sidebar .pq-switch.pq-switch-3{grid-template-columns:1fr}
+  .sidebar .pq-switch.pq-switch-3 a{justify-content:flex-start;padding:0 12px;font-size:.84rem;min-height:32px}
+  /* Título da escala em tamanho de leitura. */
+  #assessmentHead h1{font-size:clamp(1.9rem,2.6vw,2.5rem);line-height:1.12}
+  /* Exame psíquico: gerar e limpar sempre à mão. */
+  #eemView .actions:has(#eemGenerate){position:fixed;left:284px;right:32px;bottom:16px;z-index:30;display:flex;gap:10px;justify-content:flex-end;margin:0;padding:10px 14px;background:#fff;border:1px solid #dce5e6;border-radius:14px;box-shadow:0 6px 18px #233d2918}
+  #eemView{padding-bottom:90px}
+}
+/* Biblioteca: título repetido escondido, alternância Cartões | Lista. */
+#libraryPanel .library-title>div:first-child{display:none}
+#libraryPanel .library-title{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.lib-view{display:inline-flex;gap:4px;padding:3px;border:1px solid #dce5e6;border-radius:10px;background:#fff}
+.lib-view button{min-height:32px;padding:0 12px;border:0;border-radius:8px;background:none;color:#4f6469;font-weight:700;cursor:pointer}
+.lib-view button.on{background:#0b6b70;color:#fff}
+#cards.list{grid-template-columns:1fr!important;gap:8px}
+@media(min-width:1100px){#cards.list{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+#cards.list .card{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:center;min-height:0;padding:12px 16px}
+#cards.list .card>*{grid-column:1}
+#cards.list .card h2{font-size:1.02rem;margin:2px 0}
+#cards.list .card p{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;margin:0;font-size:.88rem}
+#cards.list .card .meta{display:none}
+#cards.list .card .actions{grid-column:2;grid-row:1/span 3;margin:0}
+#cards.list .card .btn{width:auto;padding:0 16px}
+/* Sugestões da busca do Início */
+.home-quick{position:relative}
+.home-hits{position:absolute;z-index:25;top:52px;left:0;right:0;display:grid;padding:6px;background:#fff;border:1px solid #dce5e6;border-radius:12px;box-shadow:0 10px 24px #233d2920}
+.home-hits[hidden]{display:none}
+.home-hits button{display:grid;gap:2px;text-align:left;min-height:44px;padding:8px 12px;border:0;border-radius:8px;background:none;cursor:pointer;color:#16302a}
+.home-hits button:hover{background:#f0f6f4}
+.home-hits small{color:#617568}
+.home-hits .home-hits-all{color:#0b6b70;font-weight:700}
 /* Como aplicar recolhível */
 details.application-guide>summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
 details.application-guide>summary::-webkit-details-marker{display:none}
