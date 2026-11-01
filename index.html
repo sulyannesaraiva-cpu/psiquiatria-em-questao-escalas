@@ -257,10 +257,10 @@ h1{letter-spacing:-.02em!important}h1 em{color:#0b6b70}
 @media print{.pq-switch{display:none!important}}
 </style></head>
 <body>
-<header class="mobile-header"><div class="brand"><b><svg class="pq-mark" viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true"><g transform="translate(0 -1)"><circle cx="8" cy="9.5" r="4.3" stroke="#ffffff" stroke-width="2.3"></circle><circle cx="16" cy="9.5" r="4.3" stroke="#ffffff" stroke-width="2.3"></circle><path d="M3.7 5.5V21" stroke="#ffffff" stroke-width="2.3"></path><path d="M20.3 5.5V21" stroke="#f2b544" stroke-width="2.3"></path></g></svg></b> Psiquiatria em Questão</div><button class="btn secondary" onclick="document.body.classList.toggle('nav-open')" aria-label="Abrir navegação">☰ Menu</button><nav class="pq-switch" aria-label="Área do site"><a href="https://www.psiquiatriaemquestao.com.br/">Estudo</a><a href="/" aria-current="page">Prática clínica</a></nav></header>
+<header class="mobile-header"><div class="brand"><b><svg class="pq-mark" viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true"><g transform="translate(0 -1)"><circle cx="8" cy="9.5" r="4.3" stroke="#ffffff" stroke-width="2.3"></circle><circle cx="16" cy="9.5" r="4.3" stroke="#ffffff" stroke-width="2.3"></circle><path d="M3.7 5.5V21" stroke="#ffffff" stroke-width="2.3"></path><path d="M20.3 5.5V21" stroke="#f2b544" stroke-width="2.3"></path></g></svg></b> Psiquiatria em Questão</div><button class="btn secondary" onclick="document.body.classList.toggle('nav-open')" aria-label="Abrir navegação">☰ Menu</button><nav class="pq-switch pq-switch-3" aria-label="Área do site"><a href="https://www.psiquiatriaemquestao.com.br/">Estudo</a><a href="https://www.psiquiatriaemquestao.com.br/?area=lab">Laboratório</a><a href="/" aria-current="page">Prática clínica</a></nav></header>
 <aside class="sidebar no-print" aria-label="Navegação principal">
  <div class="sidebar-brand"><span class="brand-icon"><svg class="pq-mark" viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true"><g transform="translate(0 -1)"><circle cx="8" cy="9.5" r="4.3" stroke="#ffffff" stroke-width="2.3"></circle><circle cx="16" cy="9.5" r="4.3" stroke="#ffffff" stroke-width="2.3"></circle><path d="M3.7 5.5V21" stroke="#ffffff" stroke-width="2.3"></path><path d="M20.3 5.5V21" stroke="#f2b544" stroke-width="2.3"></path></g></svg></span><div><strong>Psiquiatria em Questão</strong><small>PRÁTICA CLÍNICA</small></div></div>
- <nav class="pq-switch" aria-label="Área do site"><a href="https://www.psiquiatriaemquestao.com.br/">Estudo</a><a href="/" aria-current="page">Prática clínica</a></nav>
+ <nav class="pq-switch pq-switch-3" aria-label="Área do site"><a href="https://www.psiquiatriaemquestao.com.br/">Estudo</a><a href="https://www.psiquiatriaemquestao.com.br/?area=lab">Laboratório</a><a href="/" aria-current="page">Prática clínica</a></nav>
  <div class="side-section">ESPAÇO CLÍNICO</div>
  <button class="side-link selected" onclick="goHome();document.body.classList.remove('nav-open')">⌂ <span>Início</span></button>
  <button class="side-link" onclick="showLibrary()">⌕ <span>Biblioteca de escalas</span></button>
@@ -420,7 +420,7 @@ scaleGuides.cdrfull={author:"Clinical Dementia Rating (CDR). Ajustado conforme o
 scaleGuides.meem={author:"Mini Exame do Estado Mental (MEEM). Orientações de aplicação adaptadas do material TelessaúdeRS/UFRGS (2016), que referencia Duncan et al., Medicina Ambulatorial, 4ª ed., 2013.",who:"Aplicação por avaliador. Pontue as respostas conforme as instruções de cada domínio e considere escolaridade na interpretação.",period:"Estado cognitivo no momento da aplicação.",how:"Versão operacional adotada: tradução/adaptação brasileira de Bertolucci et al., conforme tabela reproduzida por Lourenço & Veras (Rev Saúde Pública, 2006). Em Atenção e Cálculo, aplicar primeiro a série de 7. Se o escore for menor que 5/5, aplicar também MUNDO ao contrário e considerar o maior dos dois escores. Cada subtração é pontuada individualmente: um erro isolado não anula acertos subsequentes. Após um erro, as próximas subtrações devem partir do valor informado pelo paciente, sem correção ou revelação do resultado esperado. A escolha evita a regra arbitrária de trocar após dois erros e mantém explícita a versão utilizada. Há outras padronizações brasileiras, como Brucki et al. (2003), que propõem uso exclusivo do sete seriado; por isso a versão adotada deve ser registrada.",time:"Aplicação breve.",purpose:"Rastreio cognitivo, máximo 30 pontos. O resultado isolado não estabelece diagnóstico e deve ser interpretado conforme escolaridade e contexto clínico."};
 function guideFor(x){
  const g=scaleGuides[x.id]||{author:"Autoria/versão específica ainda não confirmada nos materiais recuperados.",who:"Aplicação por profissional de saúde conforme o instrumento.",period:"Observe o período indicado em cada item.",how:"Leia as instruções antes de iniciar, mantenha formulação neutra e registre a opção que melhor corresponde à resposta ou desempenho observado.",time:"Não especificado.",purpose:x.description||"Instrumento clínico de avaliação."};
- return `<section class="notice application-guide"><strong>Como aplicar</strong><p><b>Objetivo:</b> ${g.purpose}</p><p><b>Quem responde / aplicação:</b> ${g.who}</p><p><b>Período:</b> ${g.period}</p><p><b>Orientação ao aplicador:</b> ${g.how}</p><p><b>Tempo:</b> ${g.time}</p><p class="small"><b>Autoria / origem:</b> ${g.author}</p></section>`;
+ return `<details class="notice application-guide"${matchMedia("(max-width: 860px)").matches?"":" open"}><summary><strong>Como aplicar</strong><span class="guide-hint">objetivo, quem responde, período e tempo</span></summary><p><b>Objetivo:</b> ${g.purpose}</p><p><b>Quem responde / aplicação:</b> ${g.who}</p><p><b>Período:</b> ${g.period}</p><p><b>Orientação ao aplicador:</b> ${g.how}</p><p><b>Tempo:</b> ${g.time}</p><p class="small"><b>Autoria / origem:</b> ${g.author}</p></details>`;
 }
 function injectGuide(){
  const h=document.getElementById("assessmentHead"); if(!h||!current)return;
@@ -2280,4 +2280,127 @@ async function copyEEM(){
 document.addEventListener("DOMContentLoaded",initEEM);
 /* Link direto para uma escala: ?escala=npi (usado pelo Laboratório do Psiquiatria em Questão). */
 window.addEventListener("load",()=>{try{const id=new URLSearchParams(location.search).get("escala");if(id&&instruments.some(x=>x.id===id))openInstrument(id);}catch(e){}});
-</script></body></html>
+
+/* ---------- Usabilidade (celular e computador) ----------
+   1. Escalas com botão próprio de cálculo: o botão genérico "Calcular resultado" some (não funcionava nelas).
+   2. Barra fixa de aplicação: "X de N respondidas" + botão que aciona o cálculo da escala.
+   3. Início: busca e atalhos das escalas mais usadas antes da apresentação.
+   4. Celular: barra de navegação embaixo (Início, Escalas, Exame psíquico, Estudo, Laboratório). */
+(function(){
+  const assessment=document.getElementById("assessment");
+  const genericCalc=document.getElementById("calc");
+  /* Botão de cálculo da escala aberta: o próprio (escalas especiais) ou o genérico. */
+  function scaleCalcButton(){
+    if(!current)return null;
+    if(!current.special)return genericCalc;
+    const own=[...document.querySelectorAll("#questions button")].filter(b=>b.offsetParent&&/calcular|registrar|ver resultado|interpretar/i.test(b.textContent));
+    return own[0]||null;
+  }
+  function radioGroups(){
+    const names=new Set([...document.querySelectorAll("#questions input[type=radio]")].filter(r=>r.offsetParent).map(r=>r.name).filter(Boolean));
+    return [...names];
+  }
+  let bar=document.createElement("div");
+  bar.id="applyBar";bar.className="apply-bar no-print";bar.hidden=true;
+  bar.innerHTML='<span class="apply-count"></span><button type="button" class="btn primary apply-go">Calcular</button>';
+  document.body.appendChild(bar);
+  bar.querySelector(".apply-go").addEventListener("click",()=>{
+    const b=scaleCalcButton();if(!b)return;
+    const missing=radioGroups().find(g=>!document.querySelector(`#questions input[name="${CSS.escape(g)}"]:checked`));
+    if(missing){const el=document.querySelector(`#questions input[name="${CSS.escape(missing)}"]`);if(el)(el.closest(".question,.q,.phq-item")||el).scrollIntoView({block:"center"});return;}
+    b.click();
+    setTimeout(()=>{const res=[...document.querySelectorAll("#assessment [id$=Result], #result")].find(r=>r.offsetParent&&r.textContent.trim());if(res)res.scrollIntoView({block:"start"});},80);
+  });
+  function updateBar(){
+    const open=assessment&&!assessment.classList.contains("hidden")&&current;
+    if(genericCalc)genericCalc.hidden=Boolean(open&&current.special);
+    if(!open){bar.hidden=true;document.body.classList.remove("apply-bar-on");return;}
+    const groups=radioGroups();const calc=scaleCalcButton();
+    if(groups.length<2||!calc){bar.hidden=true;document.body.classList.remove("apply-bar-on");return;}
+    const done=groups.filter(g=>document.querySelector(`#questions input[name="${CSS.escape(g)}"]:checked`)).length;
+    bar.querySelector(".apply-count").textContent=`${done} de ${groups.length} respondidas`;
+    bar.querySelector(".apply-go").textContent=done<groups.length?"Ir para a que falta":"Calcular";
+    bar.classList.toggle("complete",done===groups.length);
+    bar.hidden=false;document.body.classList.add("apply-bar-on");
+  }
+  const baseOpen=openInstrument;
+  openInstrument=function(id){const r=baseOpen.apply(this,arguments);setTimeout(updateBar,30);return r;};
+  ["goHome","showLibrary","showEEM"].forEach(fn=>{if(typeof window[fn]==="function"){const base=window[fn];window[fn]=function(){const r=base.apply(this,arguments);setTimeout(updateBar,0);setTimeout(syncBottomNav,0);return r;};}});
+  document.addEventListener("change",e=>{if(e.target.closest&&e.target.closest("#assessment"))updateBar();});
+  document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("#assessment"))setTimeout(updateBar,0);});
+
+  /* Início: busca e atalhos primeiro. */
+  const home=document.getElementById("home");
+  if(home&&!document.getElementById("homeQuick")){
+    const quick=[["phq9","PHQ-9"],["gad7","GAD-7"],["audit","AUDIT"],["moca","MoCA"],["meem","MEEM"],["fourat","4AT"],["ciwaar","CIWA-Ar"],["aims","AIMS"]].filter(([id])=>instruments.some(x=>x.id===id));
+    home.insertAdjacentHTML("afterbegin",`<section id="homeQuick" class="home-quick"><input type="search" class="search" placeholder="Buscar escala (ex.: PHQ-9, ansiedade, delirium)" aria-label="Buscar escala"><div class="home-quick-chips">${quick.map(([id,l])=>`<button type="button" onclick="quickOpen('${id}')">${l}</button>`).join("")}</div></section>`);
+    const input=home.querySelector("#homeQuick input");
+    const go=()=>{const q=input.value.trim();showLibrary();const s=document.getElementById("search");if(s){s.value=q;renderCards();s.focus();}};
+    input.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();go();}});
+    input.addEventListener("search",go);
+  }
+
+  /* Celular: barra de navegação embaixo. */
+  const nav=document.createElement("nav");
+  nav.id="bottomNavPc";nav.className="bottom-nav-pc no-print";nav.setAttribute("aria-label","Navegação");
+  nav.innerHTML=`<button type="button" data-bn="home"><span aria-hidden="true">⌂</span>Início</button><button type="button" data-bn="lib"><span aria-hidden="true">⌕</span>Escalas</button><button type="button" data-bn="eem"><span aria-hidden="true">▤</span>Exame</button><a href="https://www.psiquiatriaemquestao.com.br/"><span aria-hidden="true">✎</span>Estudo</a><a href="https://www.psiquiatriaemquestao.com.br/?area=lab"><span aria-hidden="true">⚗</span>Laboratório</a>`;
+  document.body.appendChild(nav);
+  nav.addEventListener("click",e=>{const b=e.target.closest("[data-bn]");if(!b)return;const k=b.dataset.bn;if(k==="home")goHome();else if(k==="lib")showLibrary();else if(k==="eem")showEEM();document.body.classList.remove("nav-open");window.scrollTo(0,0);});
+  function syncBottomNav(){
+    const vis=id=>{const el=document.getElementById(id);return el&&!el.classList.contains("hidden");};
+    const key=vis("eemView")?"eem":(vis("libraryView")||vis("assessment"))?"lib":"home";
+    nav.querySelectorAll("[data-bn]").forEach(b=>b.classList.toggle("active",b.dataset.bn===key));
+  }
+  syncBottomNav();
+  window.syncBottomNav=syncBottomNav;
+  /* Exame psíquico: depois de gerar, leva ao texto pronto. */
+  document.addEventListener("click",e=>{if(e.target.closest&&e.target.closest("#eemGenerate"))setTimeout(()=>document.getElementById("eemOutput")?.scrollIntoView({block:"center"}),60);});
+  const baseOpen2=openInstrument;openInstrument=function(){const r=baseOpen2.apply(this,arguments);setTimeout(syncBottomNav,0);return r;};
+  updateBar();
+})();
+</script>
+<style>
+/* Barra fixa de aplicação */
+.apply-bar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid #dce5e6;box-shadow:0 -6px 16px #233d2914}
+.apply-bar[hidden]{display:none}
+.apply-bar .apply-count{font-weight:700;color:#234c40}
+.apply-bar.complete .apply-count{color:#0b6b70}
+.apply-bar .btn{min-height:44px;padding:0 18px}
+body.apply-bar-on .wrap{padding-bottom:84px}
+@media(min-width:861px){.apply-bar{left:auto;right:24px;bottom:20px;border:1px solid #dce5e6;border-radius:14px;max-width:420px}}
+/* Como aplicar recolhível */
+details.application-guide>summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+details.application-guide>summary::-webkit-details-marker{display:none}
+details.application-guide>summary::after{content:"▾";margin-left:auto;color:#617568}
+details.application-guide[open]>summary::after{content:"▴"}
+details.application-guide .guide-hint{font-size:.85rem;color:#617568}
+details.application-guide[open]>summary{margin-bottom:8px}
+/* Início: busca e atalhos */
+.home-quick{display:grid;gap:10px;margin:0 0 22px}
+.home-quick .search{margin:0}
+.home-quick-chips{display:flex;flex-wrap:wrap;gap:8px}
+.home-quick-chips button{min-height:40px;padding:0 14px;border:1px solid #cbdcd2;border-radius:999px;background:#fff;color:#084e52;font-weight:700;cursor:pointer}
+/* Três áreas no seletor */
+.pq-switch.pq-switch-3{grid-template-columns:repeat(3,1fr)}
+.pq-switch.pq-switch-3 a{font-size:.78rem}
+/* Barra de navegação embaixo (só celular) */
+.bottom-nav-pc{display:none}
+@media(max-width:860px){
+  .bottom-nav-pc{position:fixed;left:0;right:0;bottom:0;z-index:35;display:grid;grid-template-columns:repeat(5,1fr);background:#fff;border-top:1px solid #dce5e6;padding-bottom:env(safe-area-inset-bottom)}
+  .bottom-nav-pc button,.bottom-nav-pc a{display:grid;justify-items:center;gap:2px;min-height:58px;padding:6px 2px;border:0;background:none;color:#617568;font:inherit;font-size:.72rem;font-weight:600;text-decoration:none;cursor:pointer}
+  .bottom-nav-pc span{font-size:1.15rem;line-height:1}
+  .bottom-nav-pc .active{color:#0b6b70}
+  body{padding-bottom:64px}
+  .apply-bar{bottom:58px;padding-bottom:10px}
+  body.apply-bar-on .wrap{padding-bottom:140px}
+  /* Exame psíquico: botões de gerar e limpar sempre à mão */
+  #eemView .actions:has(#eemGenerate){display:flex;gap:10px;position:fixed;left:0;right:0;bottom:58px;z-index:30;margin:0;padding:8px 16px;background:#fff;border-top:1px solid #dce5e6;box-shadow:0 -6px 16px #233d2914}
+  #eemView .actions:has(#eemGenerate) .btn{flex:1 1 0;min-height:44px}
+  #eemView{padding-bottom:80px}
+}
+@media(max-width:580px){
+  #home>h1{font-size:2rem}
+  #home>.lead{display:none}
+  #assessmentHead h1{font-size:1.7rem;line-height:1.15}
+}
+</style></body></html>
