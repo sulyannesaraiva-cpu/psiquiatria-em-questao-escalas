@@ -2180,7 +2180,7 @@ const eemCatalog=[
 ["Velocidade, volume e prosódia","multiple",["Velocidade, volume e prosódia habituais","Fala lentificada","Pressão de fala","Fala monótona","Volume baixo","Volume alto"],0],
 ["Alterações","multiple",["Disartria","Gagueira","Discurso prolixo","Ecolalia","Palilalia","Perseveração verbal","Neologismos","Parafasias","Afasia de expressão","Afasia de compreensão"],-1]]],
 ["Pensamento — curso",[
-["Velocidade","exclusive",["Curso normal","Curso acelerado (taquipsiquismo)","Curso lentificado (bradipsiquismo)"],0],
+["Velocidade","exclusive",["Pensamento de curso normal","Pensamento acelerado (taquipsiquismo)","Pensamento lentificado (bradipsiquismo)"],0],
 ["Outras alterações do curso","multiple",["Fuga de ideias","Bloqueio do pensamento"],-1]]],
 ["Pensamento — forma",[
 ["Organização","exclusive",["Pensamento organizado, lógico e coerente","Pensamento desorganizado"],0],
@@ -2188,7 +2188,7 @@ const eemCatalog=[
 ["Pensamento — conteúdo e juízo de realidade",[
 ["Juízo de realidade","multiple",["Juízo de realidade preservado (sem delírios)","Ideias sobrevaloradas","Ideias deliroides (delírio secundário)","Delírio primário"],0],
 ["Estrutura do delírio","exclusive",["Delírio sistematizado","Delírio pouco sistematizado","Delírio desconexo"],-1],
-["Temas","multiple",["persecutório","de referência","de influência","de grandeza","de ciúme","erotomaníaco","de ruína","de culpa","hipocondríaco","niilista","místico-religioso"],-1,{label:true}],
+["Temas","multiple",["persecutório","de referência","de influência","de grandeza","de ciúme","erotomaníaco","de ruína","de culpa","hipocondríaco","niilista","místico-religioso"],-1,{label:true,prose:"de conteúdo"}],
 ["Vivências delirantes primárias","multiple",["Percepção delirante","Intuição delirante","Humor delirante"],-1],
 ["Outros conteúdos","multiple",["Ideias obsessivas","Ideias de culpa","Ideias de ruína","Desesperança","Ideias de morte","Preocupações excessivas","Preocupações hipocondríacas","Conteúdo fóbico"],-1]]],
 ["Inteligência",[
@@ -2297,6 +2297,10 @@ const eemDefs={
 };
 const eemState={};
 let eemSex="f";
+/* Intensidade e dúvida por achado ("i-j-k" → {lvl:1..4, doubt:bool}) e preferências lembradas no navegador. */
+const eemMods={};
+let eemShowMods=(()=>{try{return localStorage.getItem("pc-eem-mods")==="1";}catch(e){return false;}})();
+let eemFmt=(()=>{try{return localStorage.getItem("pc-eem-fmt")||"topicos";}catch(e){return "topicos";}})();
 const eemEscape=x=>String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 /* Concordância: {o|a} → o (masculino) ou a (feminino). */
 const eemG=t=>String(t).replace(/\{([^|}]*)\|([^}]*)\}/g,(m,mas,fem)=>eemSex==="f"?fem:mas);
@@ -2310,9 +2314,11 @@ function initEEM(){
  host.innerHTML=`<div class="eyebrow">DOCUMENTAÇÃO CLÍNICA</div><h1>Exame do estado mental</h1>
  <p class="lead">Selecione os achados observados ou relatados. Apenas itens marcados entram no texto. A ausência de seleção não significa normalidade.</p>
  <div class="eem-sex"><strong>Concordância gramatical do texto</strong><div class="eem-sex-options"><button type="button" data-sex="f" class="selected">Feminino</button><button type="button" data-sex="m">Masculino</button></div><small>Define somente a redação, não pressupõe sexo biológico nem identidade de gênero.</small></div>
- <div class="eem-toolbar"><button type="button" class="btn primary" id="eemNormal">Sem alterações</button><button type="button" class="btn secondary" id="eemExpand">Expandir todas</button><button type="button" class="btn secondary" id="eemCollapse">Recolher todas</button></div>
+ <div class="eem-toolbar"><button type="button" class="btn primary" id="eemNormal">Sem alterações</button><button type="button" class="btn secondary eem-mods-toggle" id="eemModsToggle" aria-pressed="${eemShowMods}">Intensidade e dúvida</button><button type="button" class="btn secondary" id="eemExpand">Expandir todas</button><button type="button" class="btn secondary" id="eemCollapse">Recolher todas</button></div>
+ <p class="small eem-mods-hint">Com "Intensidade e dúvida" ligado, cada achado alterado que você marcar ganha a escala de 1+ a 4+ e o sinal "?" para quando a presença do achado não é certa (ex.: "pensamento acelerado (3+/4+)", "alucinações auditivas?").</p>
  <p class="small eem-normal-hint">"Sem alterações" marca o achado normal de cada campo, exceto a avaliação de risco, que deve ser perguntada e marcada à parte. Depois troque apenas o que estiver alterado.</p>
- ${eemCatalog.map(([section,groups,meta],i)=>`<details class="eem-group${meta&&meta.risk?" eem-risk":""}" ${i===0?"open":""}><summary>${eemEscape(section)} <span class="eem-count" data-count="${i}"></span></summary><div class="eem-fields">${groups.map(([group,mode,opts],j)=>{const defs=eemDefsFor(opts);return `<div class="eem-field"><div class="eem-field-title">${eemEscape(group)} <span class="eem-mode">${mode==="exclusive"?"seleção única":"múltipla escolha"}</span></div><div class="eem-chips">${opts.map((option,k)=>`<button type="button" class="eem-chip" data-i="${i}" data-j="${j}" data-k="${k}" aria-pressed="false">${eemEscape(eemG(option))}</button>`).join("")}</div>${defs.length?`<details class="eem-defs"><summary>O que significa?</summary><dl>${defs.map(k=>`<dt>${eemEscape(k.charAt(0).toUpperCase()+k.slice(1))}</dt><dd>${eemEscape(eemDefs[k])}</dd>`).join("")}</dl></details>`:""}</div>`;}).join("")}<label class="eem-note-label">Observações adicionais<textarea data-note="${i}" rows="2" placeholder="Descreva apenas achados efetivamente avaliados; use as palavras do paciente entre aspas quando ajudar"></textarea></label></div></details>`).join("")}
+ ${eemCatalog.map(([section,groups,meta],i)=>`<details class="eem-group${meta&&meta.risk?" eem-risk":""}" ${i===0?"open":""}><summary>${eemEscape(section)} <span class="eem-count" data-count="${i}"></span></summary><div class="eem-fields">${groups.map(([group,mode,opts],j)=>{const defs=eemDefsFor(opts);return `<div class="eem-field"><div class="eem-field-title">${eemEscape(group)} <span class="eem-mode">${mode==="exclusive"?"seleção única":"múltipla escolha"}</span></div><div class="eem-chips">${opts.map((option,k)=>`<button type="button" class="eem-chip" data-i="${i}" data-j="${j}" data-k="${k}" aria-pressed="false">${eemEscape(eemG(option))}</button>`).join("")}</div><div class="eem-mods" data-mods="${i}-${j}"></div>${defs.length?`<details class="eem-defs"><summary>O que significa?</summary><dl>${defs.map(k=>`<dt>${eemEscape(k.charAt(0).toUpperCase()+k.slice(1))}</dt><dd>${eemEscape(eemDefs[k])}</dd>`).join("")}</dl></details>`:""}</div>`;}).join("")}<label class="eem-note-label">Observações adicionais<textarea data-note="${i}" rows="2" placeholder="Descreva apenas achados efetivamente avaliados; use as palavras do paciente entre aspas quando ajudar"></textarea></label></div></details>`).join("")}
+ <div class="eem-format"><strong>Formato do texto</strong><div class="eem-sex-options" role="group" aria-label="Formato do texto"><button type="button" data-fmt="topicos" class="${eemFmt==="topicos"?"selected":""}" aria-pressed="${eemFmt==="topicos"}">Em tópicos</button><button type="button" data-fmt="corrido" class="${eemFmt==="corrido"?"selected":""}" aria-pressed="${eemFmt==="corrido"}">Texto corrido</button></div><small>Em tópicos: uma linha por função (súmula). Texto corrido: um parágrafo, como no prontuário.</small></div>
  <div class="actions"><button class="btn primary" type="button" id="eemGenerate">Gerar texto para prontuário</button><button class="btn secondary" type="button" id="eemClear">Limpar tudo</button></div>
  <p class="small">Revise e edite o texto antes de utilizá-lo. Em risco de suicídio, violência, delirium ou rebaixamento de consciência, a avaliação clínica imediata prevalece sobre esta ferramenta.</p>
  <textarea id="eemOutput" aria-label="Texto gerado para prontuário" rows="12" placeholder="O texto gerado aparecerá aqui e poderá ser editado."></textarea>
@@ -2320,7 +2326,15 @@ function initEEM(){
  <p class="small eem-sources"><b>Fontes:</b> Dalgalarrondo P. Psicopatologia e semiologia dos transtornos mentais, 3ª ed. (quadro 9.2); Cheniaux E. Manual de psicopatologia, 6ª ed. (súmula psicopatológica); Bastos CL. Manual do exame psíquico, 4ª ed. (roteiro básico). Definições resumidas com redação própria.</p>`;
  host.addEventListener("click",event=>{
   const sex=event.target.closest("[data-sex]");
-  if(sex){eemSex=sex.dataset.sex;host.querySelectorAll("[data-sex]").forEach(b=>b.classList.toggle("selected",b===sex));host.querySelectorAll(".eem-chip").forEach(b=>{b.textContent=eemG(eemCatalog[+b.dataset.i][1][+b.dataset.j][2][+b.dataset.k]);});if(host.querySelector("#eemOutput").value)generateEEM();return;}
+  if(sex){eemSex=sex.dataset.sex;host.querySelectorAll("[data-sex]").forEach(b=>b.classList.toggle("selected",b===sex));host.querySelectorAll(".eem-chip").forEach(b=>{b.textContent=eemG(eemCatalog[+b.dataset.i][1][+b.dataset.j][2][+b.dataset.k]);});eemRenderAllMods(host);if(host.querySelector("#eemOutput").value)generateEEM();return;}
+  const fmt=event.target.closest("[data-fmt]");
+  if(fmt){eemFmt=fmt.dataset.fmt;try{localStorage.setItem("pc-eem-fmt",eemFmt);}catch(e){}host.querySelectorAll("[data-fmt]").forEach(b=>{const on=b===fmt;b.classList.toggle("selected",on);b.setAttribute("aria-pressed",String(on));});if(host.querySelector("#eemOutput").value)generateEEM();return;}
+  /* Intensidade (1+ a 4+) e dúvida (?) de cada achado alterado. */
+  const lv=event.target.closest("[data-mod-lv]");
+  if(lv){const key=lv.dataset.modKey;const m=eemMods[key]||(eemMods[key]={});const n=+lv.dataset.modLv;m.lvl=m.lvl===n?0:n;eemRenderMods(host,...key.split("-").slice(0,2).map(Number));return;}
+  const dq=event.target.closest("[data-mod-doubt]");
+  if(dq){const key=dq.dataset.modKey;const m=eemMods[key]||(eemMods[key]={});m.doubt=!m.doubt;eemRenderMods(host,...key.split("-").slice(0,2).map(Number));return;}
+  if(event.target.closest("#eemModsToggle")){eemShowMods=!eemShowMods;try{localStorage.setItem("pc-eem-mods",eemShowMods?"1":"0");}catch(e){}host.classList.toggle("eem-mods-on",eemShowMods);event.target.closest("#eemModsToggle").setAttribute("aria-pressed",String(eemShowMods));return;}
   const chip=event.target.closest(".eem-chip");
   if(chip){
    const i=+chip.dataset.i,j=+chip.dataset.j,k=+chip.dataset.k;
@@ -2333,6 +2347,7 @@ function initEEM(){
    }
    chip.classList.toggle("selected",on);chip.setAttribute("aria-pressed",String(on));
    eemUpdateCount(host,i);
+   eemRenderMods(host,i,j);
    return;
   }
   if(event.target.closest("#eemNormal"))eemFillNormal(host);
@@ -2342,7 +2357,21 @@ function initEEM(){
   if(event.target.closest("#eemClear"))clearEEM();
   if(event.target.closest("#eemCopy"))copyEEM();
  });
+ host.classList.toggle("eem-mods-on",eemShowMods);
 }
+/* Linha de intensidade (1+ a 4+) e dúvida para cada achado alterado marcado no campo. */
+function eemRenderMods(host,i,j){
+ const box=host.querySelector(`[data-mods="${i}-${j}"]`);if(!box)return;
+ const [,,opts,normal]=eemCatalog[i][1][j];
+ const selected=[...host.querySelectorAll(`.eem-chip.selected[data-i="${i}"][data-j="${j}"]`)].map(b=>+b.dataset.k);
+ opts.forEach((o,k)=>{if(!selected.includes(k))delete eemMods[`${i}-${j}-${k}`];});
+ const rows=selected.filter(k=>k!==normal).map(k=>{
+  const key=`${i}-${j}-${k}`;const m=eemMods[key]||{};
+  return `<div class="eem-mod"><span class="eem-mod-name">${eemEscape(eemG(opts[k]))}</span><span class="eem-mod-lv" role="group" aria-label="Intensidade">${[1,2,3,4].map(n=>`<button type="button" data-mod-key="${key}" data-mod-lv="${n}" class="${m.lvl===n?"on":""}" aria-pressed="${m.lvl===n}">${n}+</button>`).join("")}</span><button type="button" class="eem-mod-doubt${m.doubt?" on":""}" data-mod-key="${key}" data-mod-doubt aria-pressed="${!!m.doubt}" title="Presença incerta">?</button></div>`;
+ });
+ box.innerHTML=rows.join("");
+}
+function eemRenderAllMods(host){eemCatalog.forEach(([,groups],i)=>groups.forEach((g,j)=>eemRenderMods(host,i,j)));}
 function eemUpdateCount(host,i){
  const count=host.querySelector(`[data-count="${i}"]`);
  const n=host.querySelectorAll(`.eem-chip.selected[data-i="${i}"]`).length;count.textContent=n?`${n} selecionado${n===1?"":"s"}`:"";
@@ -2369,19 +2398,28 @@ function showEEM(){
 function generateEEM(){
  const host=document.getElementById("eemView");
  const lower=s=>/^[A-ZÁÉÍÓÚÂÊÔÃÕÇ]{2}/.test(s)?s:s.charAt(0).toLowerCase()+s.slice(1);
+ const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+ const corrido=eemFmt==="corrido";
+ /* Achado com dúvida e intensidade, no formato do Cheniaux: "alucinações auditivas? (2+/4+)". */
+ const decorate=(text,key)=>{const m=eemMods[key];if(!m)return text;return text+(m.doubt?"?":"")+(m.lvl?` (${m.lvl}+/4+)`:"");};
  const lines=[];
  eemCatalog.forEach(([section,groups],i)=>{
   const parts=[];
   groups.forEach(([group,,opts,,flags],j)=>{
-   const chosen=[...host.querySelectorAll(`.eem-chip.selected[data-i="${i}"][data-j="${j}"]`)].map(b=>lower(eemG(opts[+b.dataset.k])));
+   const chosen=[...host.querySelectorAll(`.eem-chip.selected[data-i="${i}"][data-j="${j}"]`)].map(b=>decorate(lower(eemG(opts[+b.dataset.k])),`${i}-${j}-${b.dataset.k}`));
    if(!chosen.length)return;
-   parts.push(flags&&flags.label?`${group.toLowerCase()}: ${chosen.join(", ")}`:chosen.join(", "));
+   if(flags&&flags.label)parts.push(corrido?`${flags.prose||group.toLowerCase()} ${chosen.join(", ")}`:`${group.toLowerCase()}: ${chosen.join(", ")}`);
+   else parts.push(chosen.join(", "));
   });
   const note=host.querySelector(`[data-note="${i}"]`).value.trim();
   if(note)parts.push(note);
-  if(parts.length){const txt=parts.join("; ");lines.push(`${section}: ${txt.charAt(0).toUpperCase()+txt.slice(1)}.`);}
+  if(!parts.length)return;
+  lines.push(corrido?`${cap(parts.join(", "))}.`:`${section}: ${cap(parts.join("; "))}.`);
  });
- host.querySelector("#eemOutput").value=lines.length?"Exame psíquico (súmula psicopatológica):\n"+lines.join("\n"):"Nenhum achado registrado.";
+ const out=host.querySelector("#eemOutput");
+ if(!lines.length){out.value="Nenhum achado registrado.";return;}
+ /* Em tópicos: uma linha por função (súmula). Texto corrido: um parágrafo com uma frase por função. */
+ out.value=corrido?"Exame psíquico: "+lines.join(" "):"Exame psíquico (súmula psicopatológica):\n"+lines.join("\n");
 }
 function clearEEM(){
  if(!confirm("Limpar os campos do exame psíquico?"))return;
@@ -2389,6 +2427,8 @@ function clearEEM(){
  host.querySelectorAll(".eem-chip.selected").forEach(b=>{b.classList.remove("selected");b.setAttribute("aria-pressed","false");});
  host.querySelectorAll("[data-note],#eemOutput").forEach(x=>x.value="");
  host.querySelectorAll(".eem-count").forEach(x=>x.textContent="");
+ Object.keys(eemMods).forEach(k=>delete eemMods[k]);
+ eemRenderAllMods(host);
 }
 async function copyEEM(){
  const out=document.getElementById("eemOutput");if(!out.value)return;
@@ -2610,4 +2650,18 @@ details.application-guide[open]>summary{margin-bottom:8px}
 .eem-risk{border-color:#e7b9a6!important;background:#fff8f4}
 .eem-risk>summary{color:#8a2d12}
 .eem-sources{margin-top:18px;color:#617568}
+/* Intensidade e dúvida; formato do texto */
+.eem-mods,.eem-mods-hint{display:none}
+#eemView.eem-mods-on .eem-mods:not(:empty){display:grid;gap:6px;margin-top:10px}
+#eemView.eem-mods-on .eem-mods-hint{display:block}
+.eem-mods-toggle[aria-pressed="true"]{background:#0b6b70;color:#fff;border-color:#0b6b70}
+.eem-mod{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:6px 10px;border:1px dashed #cbdcd2;border-radius:10px;background:#f8fbf9}
+.eem-mod-name{flex:1 1 160px;font-size:.88rem;font-weight:600;color:#16302a}
+.eem-mod-lv{display:inline-flex;gap:4px}
+.eem-mod button{min-width:38px;min-height:34px;padding:0 8px;border:1px solid #cbdcd2;border-radius:8px;background:#fff;color:#234c40;font-weight:700;cursor:pointer}
+.eem-mod button.on{background:#0b6b70;border-color:#0b6b70;color:#fff}
+.eem-mod .eem-mod-doubt.on{background:#b45309;border-color:#b45309}
+.eem-format{background:#fff;border:1px solid #dce6df;border-radius:16px;padding:16px 20px;margin:22px 0 10px;display:grid;gap:10px}
+.eem-format .eem-sex-options button{padding:10px 22px;border:1px solid #cbdcd2;border-radius:12px;background:#fff;cursor:pointer;color:#234c40;font-weight:700}
+.eem-format .eem-sex-options button.selected{background:#084e52;color:white;border-color:#084e52}
 </style></body></html>
