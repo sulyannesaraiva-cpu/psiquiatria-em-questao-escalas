@@ -2135,109 +2135,207 @@ function showLibrary(){
  document.body.classList.remove("nav-open");window.scrollTo(0,0);
 }
 
+/* Exame psíquico: catálogo revisado com base em Dalgalarrondo (Psicopatologia e semiologia dos transtornos mentais,
+   3ª ed., quadro 9.2), Cheniaux (Manual de psicopatologia, 6ª ed., súmula psicopatológica) e Bastos (Manual do exame
+   psíquico, 4ª ed., roteiro básico). Ordem das seções: a da súmula do Cheniaux; risco em seção própria.
+   Formato de cada campo: [título, "exclusive"|"multiple", opções, índice da opção normal (-1 se não há), {label}]
+   - {o|a}: concordância (masculino|feminino), escolhida no topo da tela.
+   - Em campos de múltipla escolha, a opção normal exclui as demais (e vice-versa).
+   - label: true → o título do campo entra no texto (ex.: "Temas: persecutório, de referência"). */
 const eemCatalog=[
-["Apresentação geral",[
-["Higiene","exclusive",["Adequada","Regular","Prejudicada","Muito prejudicada"]],
-["Vestuário","exclusive",["Adequado ao contexto","Inadequado ao contexto","Extravagante","Desalinhado"]],
-["Idade aparente","exclusive",["Compatível com a cronológica","Maior que a cronológica","Menor que a cronológica"]],
-["Postura","exclusive",["Ereta","Curvada","Tensa","Relaxada"]],
-["Estado nutricional aparente","exclusive",["Sem alterações aparentes","Emagrecimento aparente","Obesidade aparente","Caquexia aparente"]],
-["Expressão facial","multiple",["Expressão ansiosa","Expressão triste","Expressão pouco reativa","Expressão de dor"]]]],
-["Atitude perante o examinador",[
-["Cooperação","exclusive",["Colaborativo","Cooperativo","Passivo","Opositor","Hostil","Reticente"]],
-["Características da interação","multiple",["Desconfiado","Evasivo","Indiferente","Prolixo","Dramático","Exigente","Contato visual reduzido","Contato visual intenso"]]]],
+["Aparência",[
+["Cuidados pessoais","exclusive",["Higiene e cuidados pessoais preservados","Higiene regular","Higiene precária","Higiene muito precária"],0],
+["Vestes","exclusive",["Vestes adequadas ao contexto","Vestes inadequadas ao contexto","Vestes extravagantes","Vestes desalinhadas"],0],
+["Idade aparente","exclusive",["Aparenta a idade cronológica","Aparenta mais idade que a cronológica","Aparenta menos idade que a cronológica"],0],
+["Estado nutricional","exclusive",["Estado nutricional aparentemente preservado","Emagrecid{o|a}","Caquétic{o|a}","Com obesidade aparente"],0],
+["Postura e marcha","exclusive",["Postura e marcha sem alterações","Postura curvada","Postura tensa ou rígida","Marcha alterada"],0],
+["Mímica facial","multiple",["Mímica preservada","Hipomimia","Amimia","Hipermimia","Mímica de tristeza","Mímica de ansiedade","Mímica perplexa"],0],
+["Sinais visíveis","multiple",["Lesões de autolesão visíveis","Odor etílico","Sinais de intoxicação ou abstinência"],-1]]],
+["Atitude",[
+["Cooperação","exclusive",["Cooperativ{o|a}","Colaboração parcial","Pouco colaborativ{o|a}","Não colaborativ{o|a}"],0],
+["Contato","exclusive",["Contato interpessoal adequado","Contato superficial","Contato visual reduzido","Contato visual fixo"],0],
+["Características da atitude","multiple",["Atitude adequada","Desconfiad{o|a}","Evasiv{o|a}","Reticente","Hostil","Irritadiç{o|a}","Indiferente","Perplex{o|a}","Assustad{o|a}","Sedutor{|a}","Pueril","Teatral","Arrogante","Submiss{o|a}","Querelante"],0]]],
 ["Consciência",[
-["Nível de consciência","exclusive",["Vigil","Hipervigil","Sonolento","Obnubilado","Torporoso","Comatoso"]],
-["Clareza da consciência","exclusive",["Clareza preservada","Confusão","Flutuação do nível de consciência"]]]],
+["Nível de consciência","exclusive",["Vígil","Hipervígil","Sonolent{o|a}","Obnubilad{o|a}","Torporos{o|a}","Comatos{o|a}"],0],
+["Lucidez e campo","multiple",["Lúcid{o|a}","Obnubilação oniroide","Estreitamento do campo da consciência","Estado crepuscular","Flutuação do nível de consciência"],0]]],
+["Atenção",[
+["Atenção","multiple",["Atenção preservada (normoprosexia)","Hipoprosexia","Aprosexia","Hipotenacidade","Hipertenacidade","Hipervigilância","Hipovigilância","Inatenção seletiva"],0]]],
 ["Orientação",[
-["Orientação temporal","exclusive",["Orientado no tempo","Desorientado no tempo","Não avaliado"]],
-["Orientação espacial","exclusive",["Orientado no espaço","Desorientado no espaço","Não avaliado"]],
-["Orientação pessoal","exclusive",["Orientado quanto à própria pessoa","Desorientado quanto à própria pessoa","Não avaliado"]],
-["Orientação situacional","exclusive",["Orientado quanto à situação","Desorientado quanto à situação","Não avaliado"]]]],
-["Atenção e concentração",[
-["Atenção","exclusive",["Atenção preservada","Atenção diminuída","Hipervigilância","Aprosexia"]],
-["Concentração","exclusive",["Concentração preservada","Dificuldade de concentração"]],
-["Características adicionais","multiple",["Distratibilidade","Fatigabilidade atencional","Atenção voluntária prejudicada","Atenção espontânea aumentada"]]]],
-["Memória",[
-["Memória global","exclusive",["Sem alteração evidente na avaliação","Prejuízo observado","Não avaliada"]],
-["Memória imediata","exclusive",["Preservada","Prejudicada"]],
-["Memória recente","exclusive",["Preservada","Prejudicada"]],
-["Memória remota","exclusive",["Preservada","Prejudicada"]],
-["Outros achados","multiple",["Confabulação","Queixa subjetiva de memória","Dificuldade de evocação"]]]],
-["Linguagem",[
-["Linguagem global","exclusive",["Sem alterações evidentes","Alterada"]],
-["Fluência","exclusive",["Fluência habitual","Fluência reduzida","Fluência aumentada"]],
-["Compreensão","exclusive",["Preservada","Prejudicada"]],
-["Nomeação","exclusive",["Preservada","Prejudicada"]],
-["Repetição","exclusive",["Preservada","Prejudicada"]],
-["Alterações específicas","multiple",["Disartria","Mutismo","Ecolalia","Palilalia","Neologismos","Parafasias","Afasia expressiva","Afasia receptiva"]]]],
-["Pensamento — curso",[
-["Velocidade","exclusive",["Curso habitual","Acelerado","Lentificado"]],
-["Outras alterações","multiple",["Fuga de ideias","Bloqueio do pensamento","Taquipsiquismo","Bradipsiquismo","Perseveração","Interrupção súbita"]]]],
-["Pensamento — forma",[
-["Organização","exclusive",["Organizado","Desorganizado"]],
-["Abstração","exclusive",["Pensamento abstrato preservado","Pensamento concreto"]],
-["Alterações formais","multiple",["Afrouxamento das associações","Descarrilamento","Tangencialidade","Circunstancialidade","Incoerência","Desagregação","Salada de palavras","Pensamento mágico"]]]],
-["Pensamento — conteúdo e risco",[
-["Conteúdo global","exclusive",["Sem alterações identificadas","Conteúdo alterado"]],
-["Ideação suicida","exclusive",["Negada na avaliação","Ideação passiva relatada","Ideação ativa relatada"]],
-["Plano suicida","exclusive",["Plano negado","Plano relatado"]],
-["Intenção suicida","exclusive",["Intenção negada","Intenção relatada"]],
-["Tentativa prévia","exclusive",["Tentativas negadas","Tentativa prévia relatada"]],
-["Autolesão não suicida","exclusive",["Negada","Relatada"]],
-["Ideação homicida","exclusive",["Negada","Relatada"]],
-["Ideias e fenômenos","multiple",["Ideias de culpa","Ideias de ruína","Desesperança","Ideias de grandeza","Ideias persecutórias","Ideias de referência","Delírio de influência","Delírio somático","Delírio místico-religioso","Obsessões","Compulsões","Ruminações","Fobias","Preocupações excessivas","Inserção do pensamento","Roubo do pensamento","Difusão do pensamento"]]]],
+["Alopsíquica — tempo","exclusive",["Orientad{o|a} no tempo","Parcialmente orientad{o|a} no tempo","Desorientad{o|a} no tempo"],0],
+["Alopsíquica — espaço","exclusive",["Orientad{o|a} no espaço","Parcialmente orientad{o|a} no espaço","Desorientad{o|a} no espaço"],0],
+["Situação","exclusive",["Sabe por que está sendo avaliad{o|a}","Não sabe por que está sendo avaliad{o|a}"],0],
+["Autopsíquica","exclusive",["Orientad{o|a} autopsiquicamente","Desorientad{o|a} autopsiquicamente"],0],
+["Outras alterações","multiple",["Dupla orientação","Falsa orientação (delirante)"],-1]]],
 ["Sensopercepção",[
-["Avaliação global","exclusive",["Sem alterações identificadas","Alterações sensoperceptivas relatadas ou observadas"]],
-["Alucinações","multiple",["Auditivas","Visuais","Táteis","Olfativas","Gustativas","Cinestésicas","Cenestésicas","De comando","Ameaçadoras"]],
-["Outros fenômenos","multiple",["Ilusões","Pseudoalucinações","Despersonalização","Desrealização","Vozes dialogando","Vozes comentando"]]]],
-["Humor e afeto",[
-["Humor","exclusive",["Eutímico","Deprimido","Elevado","Expansivo","Irritável","Ansioso","Disfórico"]],
-["Modulação afetiva","exclusive",["Afeto modulado","Afeto embotado","Afeto aplainado","Afeto restrito"]],
-["Congruência","exclusive",["Afeto congruente","Afeto incongruente"]],
-["Outros achados","multiple",["Labilidade afetiva","Anedonia","Apatia","Alexitimia","Ambivalência afetiva","Incontinência afetiva"]]]],
+["Alucinações","multiple",["Sem alucinações aparentes ou relatadas","Alucinações auditivas","Vozes que comentam","Vozes que dialogam","Vozes de comando","Sonorização do pensamento","Alucinações visuais","Zoopsias","Alucinações táteis","Alucinações olfativas","Alucinações gustativas","Alucinações cenestésicas","Alucinações cinestésicas"],0],
+["Comportamento alucinatório","multiple",["Atitude alucinatória","Solilóquios"],-1],
+["Outros fenômenos","multiple",["Pseudoalucinações","Alucinose","Ilusões","Pareidolias","Hiperestesia","Hipoestesia","Macropsia ou micropsia"],-1]]],
+["Memória",[
+["Fixação","exclusive",["Memória de fixação preservada","Hipomnésia de fixação","Amnésia anterógrada"],0],
+["Evocação","exclusive",["Memória de evocação preservada","Hipomnésia de evocação","Amnésia retrógrada"],0],
+["Memória remota","exclusive",["Memória remota preservada","Memória remota prejudicada"],0],
+["Outros achados","multiple",["Amnésia lacunar","Confabulação","Paramnésias","Hipermnésia","Queixa de memória sem déficit aparente"],-1]]],
+["Fala e linguagem",[
+["Quantidade","exclusive",["Fala espontânea, em quantidade habitual","Laconismo","Logorreia","Mutismo"],0],
+["Velocidade, volume e prosódia","multiple",["Velocidade, volume e prosódia habituais","Fala lentificada","Pressão de fala","Fala monótona","Volume baixo","Volume alto"],0],
+["Alterações","multiple",["Disartria","Gagueira","Discurso prolixo","Ecolalia","Palilalia","Perseveração verbal","Neologismos","Parafasias","Afasia de expressão","Afasia de compreensão"],-1]]],
+["Pensamento — curso",[
+["Velocidade","exclusive",["Curso normal","Curso acelerado (taquipsiquismo)","Curso lentificado (bradipsiquismo)"],0],
+["Outras alterações do curso","multiple",["Fuga de ideias","Bloqueio do pensamento"],-1]]],
+["Pensamento — forma",[
+["Organização","exclusive",["Pensamento organizado, lógico e coerente","Pensamento desorganizado"],0],
+["Alterações da forma","multiple",["Circunstancialidade","Tangencialidade","Afrouxamento das associações","Descarrilamento","Desagregação","Incoerência","Empobrecimento do pensamento","Pensamento concreto","Pensamento mágico"],-1]]],
+["Pensamento — conteúdo e juízo de realidade",[
+["Juízo de realidade","multiple",["Juízo de realidade preservado (sem delírios)","Ideias sobrevaloradas","Ideias deliroides (delírio secundário)","Delírio primário"],0],
+["Estrutura do delírio","exclusive",["Delírio sistematizado","Delírio pouco sistematizado","Delírio desconexo"],-1],
+["Temas","multiple",["persecutório","de referência","de influência","de grandeza","de ciúme","erotomaníaco","de ruína","de culpa","hipocondríaco","niilista","místico-religioso"],-1,{label:true}],
+["Vivências delirantes primárias","multiple",["Percepção delirante","Intuição delirante","Humor delirante"],-1],
+["Outros conteúdos","multiple",["Ideias obsessivas","Ideias de culpa","Ideias de ruína","Desesperança","Ideias de morte","Preocupações excessivas","Preocupações hipocondríacas","Conteúdo fóbico"],-1]]],
+["Inteligência",[
+["Avaliação clínica","exclusive",["Inteligência aparentemente compatível com a escolaridade e o meio","Inteligência aparentemente abaixo do esperado","Inteligência não avaliada"],0],
+["Abstração","exclusive",["Capacidade de abstração preservada","Capacidade de abstração prejudicada"],0]]],
+["Vontade (conação)",[
+["Nível","exclusive",["Normobulia","Hipobulia","Abulia","Hiperbulia"],0],
+["Alterações","multiple",["Impulsividade","Compulsões","Negativismo","Obediência automática","Ambitendência","Sugestionabilidade aumentada"],-1]]],
 ["Psicomotricidade",[
-["Atividade psicomotora","exclusive",["Sem alterações observadas","Agitação psicomotora","Lentificação psicomotora","Estupor"]],
-["Sinais catatônicos","exclusive",["Não observados","Sinais observados"]],
-["Alterações motoras","multiple",["Catalepsia","Flexibilidade cérea","Negativismo","Mutismo","Posturas mantidas","Estereotipias","Maneirismos","Ecopraxia","Ecocinesia","Tiques","Tremor","Acatisia","Discinesias","Automatismos","Impulsividade"]]]],
-["Juízo crítico",[
-["Juízo","exclusive",["Juízo crítico preservado","Juízo crítico prejudicado","Juízo crítico abolido"]],
-["Julgamento social","exclusive",["Preservado","Prejudicado"]],
-["Tomada de decisões","exclusive",["Capacidade aparentemente preservada","Capacidade prejudicada"]],
-["Avaliação de riscos","exclusive",["Avaliação de riscos adequada","Avaliação de riscos inadequada"]]]],
-["Insight",[
-["Insight global","exclusive",["Preservado","Parcial","Ausente"]],
-["Consciência de morbidade","exclusive",["Reconhece condição clínica","Não reconhece condição clínica"]],
-["Necessidade de tratamento","exclusive",["Reconhece necessidade de tratamento","Não reconhece necessidade de tratamento"]],
-["Adesão relatada","exclusive",["Boa adesão","Adesão irregular","Baixa adesão"]]]]
+["Atividade","exclusive",["Psicomotricidade sem alterações","Inquietação psicomotora","Agitação psicomotora","Lentificação psicomotora","Estupor"],0],
+["Alterações","multiple",["Estereotipias","Maneirismos","Tiques","Tremor","Acatisia","Discinesias","Rigidez","Catalepsia","Flexibilidade cérea","Posturas mantidas","Ecopraxia","Ecomimia"],-1]]],
+["Pragmatismo",[
+["Pragmatismo","exclusive",["Pragmatismo preservado","Hipopragmatismo","Apragmatismo"],0]]],
+["Humor e afeto",[
+["Humor","exclusive",["Eutímic{o|a}","Hipotímic{o|a} (humor deprimido)","Hipertímic{o|a} (humor elevado)","Humor expansivo","Humor irritável","Humor ansioso","Humor disfórico"],0],
+["Modulação e ressonância","exclusive",["Afeto modulado, com ressonância preservada","Afeto hipomodulado (restrito)","Embotamento afetivo","Afeto hipermodulado"],0],
+["Congruência","exclusive",["Afeto congruente com o conteúdo","Afeto incongruente (paratimia)"],0],
+["Outros achados","multiple",["Labilidade afetiva","Incontinência afetiva","Ambivalência afetiva","Anedonia","Apatia","Angústia","Alexitimia","Risos imotivados"],-1]]],
+["Consciência do eu",[
+["Vivências do eu","multiple",["Consciência do eu preservada","Despersonalização","Desrealização","Vivências de influência","Inserção do pensamento","Roubo do pensamento","Difusão do pensamento","Alteração da unidade do eu","Alteração da identidade do eu","Alteração dos limites do eu"],0]]],
+["Prospecção",[
+["Planos para o futuro","exclusive",["Planos para o futuro coerentes com a realidade","Planos para o futuro pouco realistas","Ausência de planos para o futuro","Planos de conteúdo delirante"],0]]],
+["Crítica e insight",[
+["Consciência de morbidade","exclusive",["Crítica preservada (reconhece estar doente)","Crítica parcial","Sem crítica (não reconhece estar doente)"],0],
+["Tratamento","exclusive",["Reconhece necessidade de tratamento","Ambivalente quanto ao tratamento","Recusa tratamento"],0],
+["Desejo de ajuda","exclusive",["Deseja ajuda","Não deseja ajuda"],0],
+["Julgamento","exclusive",["Julgamento preservado","Julgamento prejudicado"],0]]],
+["Avaliação de risco",[
+["Ideação suicida","exclusive",["Nega ideação suicida","Ideação de morte passiva","Ideação suicida sem plano","Ideação suicida com plano","Ideação suicida com plano e intenção"],0],
+["Tentativas","exclusive",["Nega tentativas prévias","Tentativa prévia relatada","Tentativa recente"],0],
+["Autolesão","exclusive",["Nega autolesão","Autolesão não suicida relatada"],0],
+["Heteroagressividade","exclusive",["Nega ideação heteroagressiva","Ideação heteroagressiva relatada","Heteroagressividade durante a avaliação"],0],
+["Fatores que aumentam o risco","multiple",["Acesso a meios letais","Desesperança intensa","Alucinações de comando","Uso de substâncias associado","Rede de apoio frágil"],-1]],{risk:true}]
 ];
+/* Definições curtas (redação própria, a partir de Dalgalarrondo, Cheniaux e Bastos). A chave aparece em alguma opção. */
+const eemDefs={
+"Normoprosexia":"Atenção habitual, capaz de se fixar e de se deslocar conforme a necessidade.",
+"Hipoprosexia":"Diminuição global da atenção (comum em rebaixamento de consciência e na depressão).",
+"Aprosexia":"Abolição da atenção: nenhum estímulo consegue mantê-la.",
+"Hipotenacidade":"Dificuldade de manter a atenção num mesmo foco; desvia-se com facilidade (distraibilidade), como na mania.",
+"Hipertenacidade":"Atenção presa a um tema, com dificuldade de se deslocar para outros (ex.: estados obsessivos, depressão).",
+"Hipervigilância":"Atenção espontânea aumentada, voltada a qualquer estímulo do ambiente.",
+"Hipovigilância":"Pouca atenção espontânea ao ambiente.",
+"Obnubilação oniroide":"Rebaixamento da consciência com vivências parecidas com sonho, alucinações visuais e agitação: o quadro do delirium.",
+"Estreitamento do campo":"A consciência se restringe a poucos conteúdos; o resto fica fora do foco (ex.: estados dissociativos).",
+"Estado crepuscular":"Estreitamento da consciência de início e fim súbitos, com atos aparentemente organizados e amnésia posterior (ex.: epilepsia).",
+"Dupla orientação":"Mantém a orientação correta lado a lado com uma orientação delirante.",
+"Pseudoalucinações":"Imagens percebidas no espaço interno (dentro da mente), sem a nitidez nem a projeção externa de uma percepção.",
+"Alucinose":"Alucinação que o próprio paciente reconhece como anormal; sugere causa orgânica ou tóxica.",
+"Ilusões":"Percepção deformada de um objeto real.",
+"Pareidolias":"Imagens formadas a partir de estímulos vagos (nuvens, manchas), reconhecidas como tal.",
+"Sonorização do pensamento":"Ouvir os próprios pensamentos como se fossem ditos em voz alta.",
+"Atitude alucinatória":"Comportamento de quem parece ouvir ou ver algo (olhar para um ponto, responder, tapar os ouvidos).",
+"Confabulação":"Preenchimento das lacunas de memória com relatos inventados, sem intenção de enganar.",
+"Paramnésias":"Distorções da lembrança, como déjà vu, jamais vu ou falsos reconhecimentos.",
+"fixação":"Capacidade de registrar informações novas (memória recente).",
+"evocação":"Capacidade de trazer à consciência o que já foi registrado.",
+"Laconismo":"Respostas curtas, com pouca fala espontânea.",
+"Logorreia":"Fala excessiva e difícil de interromper; não confundir com fala apenas ansiosa.",
+"Mutismo":"Ausência de fala com aparelho fonador íntegro; não confundir com afasia ou afonia.",
+"Pressão de fala":"Fala rápida e insistente, como se o paciente precisasse falar.",
+"Circunstancialidade":"Chega ao objetivo da resposta, mas por excesso de detalhes desnecessários.",
+"Tangencialidade":"Afasta-se do objetivo da pergunta e não retorna a ele.",
+"Afrouxamento das associações":"As ideias se ligam de forma frouxa, com saltos pouco compreensíveis.",
+"Descarrilamento":"O discurso desvia de uma ideia para outra sem relação clara.",
+"Desagregação":"Perda grave das ligações entre as ideias; o discurso fica sem sentido.",
+"Incoerência":"Discurso incompreensível, mesmo na construção das frases.",
+"Fuga de ideias":"Sucessão rápida de ideias, ligadas por associações superficiais (sons, palavras), típica da mania.",
+"Bloqueio do pensamento":"Interrupção súbita do pensamento no meio do discurso, sem motivo aparente.",
+"Ideias sobrevaloradas":"Crença intensa e carregada de afeto, compreensível pela história e pela personalidade, mantida com menos rigidez que um delírio.",
+"Ideias deliroides":"Crença falsa compreensível a partir de outra vivência (humor deprimido ou elevado, alucinações): delírio secundário.",
+"Delírio primário":"Convicção irredutível que surge sem derivar de outra vivência e não é compreensível psicologicamente.",
+"Delírio sistematizado":"Delírio organizado, coerente internamente, com tema central.",
+"Delírio desconexo":"Delírio fragmentado, sem organização nem tema central.",
+"Percepção delirante":"Uma percepção normal ganha, de repente, um significado delirante para o paciente.",
+"Intuição delirante":"Ideia delirante que surge subitamente, como revelação, sem percepção que a desencadeie.",
+"Humor delirante":"Sensação de que algo estranho e significativo está acontecendo, antes de o delírio se formar.",
+"Normobulia":"Vontade habitual: inicia e mantém ações por iniciativa própria.",
+"Hipobulia":"Redução da vontade e da iniciativa.",
+"Abulia":"Incapacidade de agir por iniciativa própria.",
+"Hiperbulia":"Aumento da vontade e da atividade dirigida (ex.: mania).",
+"Negativismo":"Oposição ativa ou passiva ao que é solicitado.",
+"Obediência automática":"Cumpre ordens de forma automática, como um robô.",
+"Ambitendência":"Inicia e interrompe a mesma ação, preso entre impulsos opostos.",
+"Hipopragmatismo":"Dificuldade de realizar o que planeja ou de concluir o que inicia.",
+"Apragmatismo":"Incapacidade de executar atividades práticas e de cuidar dos próprios interesses.",
+"Embotamento afetivo":"Redução da expressão e da ressonância afetivas; aplainamento é usado como sinônimo.",
+"hipomodulado":"Expressão afetiva com pouca variação, mas ainda presente.",
+"paratimia":"Afeto em desacordo com o conteúdo do que é dito (ex.: rir ao falar de algo triste).",
+"Labilidade afetiva":"Mudanças rápidas de um estado afetivo para outro.",
+"Incontinência afetiva":"Dificuldade de conter a expressão das emoções (choro ou riso fáceis e intensos).",
+"Despersonalização":"Sensação de estranheza em relação a si mesmo, ao próprio corpo ou aos próprios atos.",
+"Desrealização":"Sensação de estranheza em relação ao ambiente, como se fosse irreal.",
+"Vivências de influência":"Sensação de que pensamentos, sentimentos ou atos são controlados por algo externo.",
+"Inserção do pensamento":"Vivência de que pensamentos alheios são colocados na própria mente.",
+"Roubo do pensamento":"Vivência de que os pensamentos são retirados da mente.",
+"Difusão do pensamento":"Vivência de que os próprios pensamentos são percebidos ou transmitidos aos outros.",
+"Hipomimia":"Pouca expressão facial.",
+"Amimia":"Ausência de expressão facial.",
+"Catalepsia":"Manutenção prolongada de posturas, mesmo desconfortáveis.",
+"Flexibilidade cérea":"Leve resistência ao movimento passivo, mantendo depois a posição dada pelo examinador.",
+"Ecopraxia":"Repetição dos gestos do examinador.",
+"Ecomimia":"Repetição das expressões faciais do examinador.",
+"Acatisia":"Inquietação motora com necessidade subjetiva de se mover; pode ser efeito de antipsicótico.",
+"Crítica parcial":"Reconhece alguns sintomas, mas não os atribui a um transtorno ou minimiza sua importância."
+};
 const eemState={};
 let eemSex="f";
 const eemEscape=x=>String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+/* Concordância: {o|a} → o (masculino) ou a (feminino). */
+const eemG=t=>String(t).replace(/\{([^|}]*)\|([^}]*)\}/g,(m,mas,fem)=>eemSex==="f"?fem:mas);
+const eemGM=t=>String(t).replace(/\{([^|}]*)\|([^}]*)\}/g,(m,mas)=>mas);
+function eemDefsFor(opts){
+ const keys=Object.keys(eemDefs);
+ return keys.filter(k=>opts.some(o=>eemGM(o).toLowerCase().includes(k.toLowerCase())));
+}
 function initEEM(){
  const host=document.getElementById("eemView");
  host.innerHTML=`<div class="eyebrow">DOCUMENTAÇÃO CLÍNICA</div><h1>Exame do estado mental</h1>
- <p class="lead">Selecione os achados observados ou relatados. Apenas itens marcados entrarão no texto. A ausência de seleção não significa normalidade.</p>
+ <p class="lead">Selecione os achados observados ou relatados. Apenas itens marcados entram no texto. A ausência de seleção não significa normalidade.</p>
  <div class="eem-sex"><strong>Concordância gramatical do texto</strong><div class="eem-sex-options"><button type="button" data-sex="f" class="selected">Feminino</button><button type="button" data-sex="m">Masculino</button></div><small>Define somente a redação, não pressupõe sexo biológico nem identidade de gênero.</small></div>
- <div class="eem-toolbar"><button type="button" class="btn secondary" id="eemExpand">Expandir todas</button><button type="button" class="btn secondary" id="eemCollapse">Recolher todas</button></div>
- ${eemCatalog.map(([section,groups],i)=>`<details class="eem-group" ${i===0?"open":""}><summary>${eemEscape(section)} <span class="eem-count" data-count="${i}"></span></summary><div class="eem-fields">${groups.map(([group,mode,opts],j)=>`<div class="eem-field"><div class="eem-field-title">${eemEscape(group)} <span class="eem-mode">${mode==="exclusive"?"seleção única":"múltipla escolha"}</span></div><div class="eem-chips">${opts.map((option,k)=>`<button type="button" class="eem-chip" data-i="${i}" data-j="${j}" data-k="${k}" aria-pressed="false">${eemEscape(option)}</button>`).join("")}</div></div>`).join("")}<label class="eem-note-label">Observações adicionais<textarea data-note="${i}" rows="2" placeholder="Descreva apenas achados efetivamente avaliados"></textarea></label></div></details>`).join("")}
+ <div class="eem-toolbar"><button type="button" class="btn primary" id="eemNormal">Sem alterações</button><button type="button" class="btn secondary" id="eemExpand">Expandir todas</button><button type="button" class="btn secondary" id="eemCollapse">Recolher todas</button></div>
+ <p class="small eem-normal-hint">"Sem alterações" marca o achado normal de cada campo, exceto a avaliação de risco, que deve ser perguntada e marcada à parte. Depois troque apenas o que estiver alterado.</p>
+ ${eemCatalog.map(([section,groups,meta],i)=>`<details class="eem-group${meta&&meta.risk?" eem-risk":""}" ${i===0?"open":""}><summary>${eemEscape(section)} <span class="eem-count" data-count="${i}"></span></summary><div class="eem-fields">${groups.map(([group,mode,opts],j)=>{const defs=eemDefsFor(opts);return `<div class="eem-field"><div class="eem-field-title">${eemEscape(group)} <span class="eem-mode">${mode==="exclusive"?"seleção única":"múltipla escolha"}</span></div><div class="eem-chips">${opts.map((option,k)=>`<button type="button" class="eem-chip" data-i="${i}" data-j="${j}" data-k="${k}" aria-pressed="false">${eemEscape(eemG(option))}</button>`).join("")}</div>${defs.length?`<details class="eem-defs"><summary>O que significa?</summary><dl>${defs.map(k=>`<dt>${eemEscape(k.charAt(0).toUpperCase()+k.slice(1))}</dt><dd>${eemEscape(eemDefs[k])}</dd>`).join("")}</dl></details>`:""}</div>`;}).join("")}<label class="eem-note-label">Observações adicionais<textarea data-note="${i}" rows="2" placeholder="Descreva apenas achados efetivamente avaliados; use as palavras do paciente entre aspas quando ajudar"></textarea></label></div></details>`).join("")}
  <div class="actions"><button class="btn primary" type="button" id="eemGenerate">Gerar texto para prontuário</button><button class="btn secondary" type="button" id="eemClear">Limpar tudo</button></div>
  <p class="small">Revise e edite o texto antes de utilizá-lo. Em risco de suicídio, violência, delirium ou rebaixamento de consciência, a avaliação clínica imediata prevalece sobre esta ferramenta.</p>
  <textarea id="eemOutput" aria-label="Texto gerado para prontuário" rows="12" placeholder="O texto gerado aparecerá aqui e poderá ser editado."></textarea>
- <div class="actions"><button class="btn secondary" type="button" id="eemCopy">Copiar texto</button></div>`;
+ <div class="actions"><button class="btn secondary" type="button" id="eemCopy">Copiar texto</button></div>
+ <p class="small eem-sources"><b>Fontes:</b> Dalgalarrondo P. Psicopatologia e semiologia dos transtornos mentais, 3ª ed. (quadro 9.2); Cheniaux E. Manual de psicopatologia, 6ª ed. (súmula psicopatológica); Bastos CL. Manual do exame psíquico, 4ª ed. (roteiro básico). Definições resumidas com redação própria.</p>`;
  host.addEventListener("click",event=>{
   const sex=event.target.closest("[data-sex]");
-  if(sex){eemSex=sex.dataset.sex;host.querySelectorAll("[data-sex]").forEach(b=>b.classList.toggle("selected",b===sex));return;}
+  if(sex){eemSex=sex.dataset.sex;host.querySelectorAll("[data-sex]").forEach(b=>b.classList.toggle("selected",b===sex));host.querySelectorAll(".eem-chip").forEach(b=>{b.textContent=eemG(eemCatalog[+b.dataset.i][1][+b.dataset.j][2][+b.dataset.k]);});if(host.querySelector("#eemOutput").value)generateEEM();return;}
   const chip=event.target.closest(".eem-chip");
   if(chip){
    const i=+chip.dataset.i,j=+chip.dataset.j,k=+chip.dataset.k;
-   const mode=eemCatalog[i][1][j][1];
-   if(mode==="exclusive")host.querySelectorAll(`.eem-chip[data-i="${i}"][data-j="${j}"]`).forEach(b=>{if(b!==chip){b.classList.remove("selected");b.setAttribute("aria-pressed","false");}});
-   const on=!chip.classList.contains("selected");chip.classList.toggle("selected",on);chip.setAttribute("aria-pressed",String(on));
-   const count=host.querySelector(`[data-count="${i}"]`);
-   const n=host.querySelectorAll(`.eem-chip.selected[data-i="${i}"]`).length;count.textContent=n?`${n} selecionado${n===1?"":"s"}`:"";
+   const [,mode,,normal]=eemCatalog[i][1][j];
+   const same=[...host.querySelectorAll(`.eem-chip[data-i="${i}"][data-j="${j}"]`)];
+   const on=!chip.classList.contains("selected");
+   if(on){
+    /* Seleção única: desmarca as outras. Múltipla: a opção normal exclui as alteradas, e vice-versa. */
+    same.forEach(b=>{const bk=+b.dataset.k;if(b===chip)return;if(mode==="exclusive"||k===normal||bk===normal){b.classList.remove("selected");b.setAttribute("aria-pressed","false");}});
+   }
+   chip.classList.toggle("selected",on);chip.setAttribute("aria-pressed",String(on));
+   eemUpdateCount(host,i);
    return;
   }
+  if(event.target.closest("#eemNormal"))eemFillNormal(host);
   if(event.target.closest("#eemExpand"))host.querySelectorAll("details.eem-group").forEach(d=>d.open=true);
   if(event.target.closest("#eemCollapse"))host.querySelectorAll("details.eem-group").forEach(d=>d.open=false);
   if(event.target.closest("#eemGenerate"))generateEEM();
@@ -2245,25 +2343,45 @@ function initEEM(){
   if(event.target.closest("#eemCopy"))copyEEM();
  });
 }
+function eemUpdateCount(host,i){
+ const count=host.querySelector(`[data-count="${i}"]`);
+ const n=host.querySelectorAll(`.eem-chip.selected[data-i="${i}"]`).length;count.textContent=n?`${n} selecionado${n===1?"":"s"}`:"";
+}
+/* "Sem alterações": marca o achado normal dos campos que ainda não têm nada marcado.
+   A avaliação de risco fica de fora: negar ideação suicida precisa ser perguntado e registrado de propósito. */
+function eemFillNormal(host){
+ eemCatalog.forEach(([,groups,meta],i)=>{
+  if(meta&&meta.risk)return;
+  groups.forEach(([,,,normal],j)=>{
+   if(normal==null||normal<0)return;
+   if(host.querySelector(`.eem-chip.selected[data-i="${i}"][data-j="${j}"]`))return;
+   const b=host.querySelector(`.eem-chip[data-i="${i}"][data-j="${j}"][data-k="${normal}"]`);
+   if(b){b.classList.add("selected");b.setAttribute("aria-pressed","true");}
+  });
+  eemUpdateCount(host,i);
+ });
+}
 function showEEM(){
  ["home","libraryView","assessment"].forEach(id=>document.getElementById(id).classList.add("hidden"));
  document.getElementById("eemView").classList.remove("hidden");document.body.classList.remove("nav-open");window.scrollTo(0,0);
 }
+/* Texto em formato de súmula psicopatológica: uma linha por função, termos técnicos, concordância escolhida. */
 function generateEEM(){
  const host=document.getElementById("eemView");
+ const lower=s=>/^[A-ZÁÉÍÓÚÂÊÔÃÕÇ]{2}/.test(s)?s:s.charAt(0).toLowerCase()+s.slice(1);
  const lines=[];
  eemCatalog.forEach(([section,groups],i)=>{
-  const vals=[];
-  groups.forEach(([group,,opts],j)=>{
-   const chosen=[...host.querySelectorAll(`.eem-chip.selected[data-i="${i}"][data-j="${j}"]`)].map(b=>opts[+b.dataset.k]);
-   if(chosen.length)vals.push(`${group}: ${chosen.join(", ")}`);
+  const parts=[];
+  groups.forEach(([group,,opts,,flags],j)=>{
+   const chosen=[...host.querySelectorAll(`.eem-chip.selected[data-i="${i}"][data-j="${j}"]`)].map(b=>lower(eemG(opts[+b.dataset.k])));
+   if(!chosen.length)return;
+   parts.push(flags&&flags.label?`${group.toLowerCase()}: ${chosen.join(", ")}`:chosen.join(", "));
   });
   const note=host.querySelector(`[data-note="${i}"]`).value.trim();
-  if(note)vals.push("Observações: "+note);
-  if(vals.length)lines.push(section+": "+vals.join("; ")+".");
+  if(note)parts.push(note);
+  if(parts.length){const txt=parts.join("; ");lines.push(`${section}: ${txt.charAt(0).toUpperCase()+txt.slice(1)}.`);}
  });
- const subject=eemSex==="f"?"Paciente examinada":"Paciente examinado";
- host.querySelector("#eemOutput").value=lines.length?subject+".\n"+lines.join("\n"):"Nenhum achado registrado.";
+ host.querySelector("#eemOutput").value=lines.length?"Exame psíquico (súmula psicopatológica):\n"+lines.join("\n"):"Nenhum achado registrado.";
 }
 function clearEEM(){
  if(!confirm("Limpar os campos do exame psíquico?"))return;
@@ -2481,4 +2599,15 @@ details.application-guide[open]>summary{margin-bottom:8px}
   #home>.lead{display:none}
   #assessmentHead h1{font-size:1.7rem;line-height:1.15}
 }
+/* Exame psíquico: definições e seção de risco */
+.eem-defs{margin-top:8px}
+.eem-defs>summary{cursor:pointer;color:#0b6b70;font-weight:700;font-size:.85rem;list-style:none}
+.eem-defs>summary::-webkit-details-marker{display:none}
+.eem-defs>summary::before{content:"ⓘ ";}
+.eem-defs dl{margin:8px 0 0;display:grid;gap:6px;font-size:.88rem}
+.eem-defs dt{font-weight:700;color:#16302a}
+.eem-defs dd{margin:0 0 4px;color:#4f6469}
+.eem-risk{border-color:#e7b9a6!important;background:#fff8f4}
+.eem-risk>summary{color:#8a2d12}
+.eem-sources{margin-top:18px;color:#617568}
 </style></body></html>
