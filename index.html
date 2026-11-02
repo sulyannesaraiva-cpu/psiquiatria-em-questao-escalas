@@ -278,7 +278,7 @@ h1{letter-spacing:-.02em!important}h1 em{color:#0b6b70}
 <h1>A avaliação clínica,<br><em>mais simples.</em></h1>
 <p class="lead">Encontre o instrumento adequado, aplique com orientação e interprete com clareza. Gratuito, sem cadastro e sem limite de aplicações.</p>
 <section class="finder"><div class="eyebrow">ORIENTAÇÃO POR SINTOMAS</div><h2>O que o paciente relata?</h2><p>Selecione sintomas para encontrar instrumentos que podem complementar sua avaliação.</p><div id="symptoms"></div><div id="suggestions" aria-live="polite"></div><p class="small">Sugestões orientativas, não diagnósticas. Avalie indicação, população e contexto de aplicação.</p></section></section><section id="libraryView" class="hidden"><div class="eyebrow">BIBLIOTECA CLÍNICA</div><h1>Biblioteca de instrumentos</h1><p class="lead">Encontre a escala pelo nome, população ou área clínica.</p><div id="libraryPanel"><div class="library-title"><div><div class="eyebrow">BIBLIOTECA CLÍNICA</div><h2>Instrumentos de avaliação</h2></div><span id="instrumentCount" class="library-count"></span></div>
-<input id="search" class="search" type="search" placeholder="Buscar escala ou categoria…" oninput="renderCards()">
+<input id="search" class="search" type="search" placeholder="Buscar escala ou categoria…" aria-label="Buscar escala ou categoria" oninput="renderCards()">
 
 <div class="catalog-controls"><label>População<select id="popFilter" onchange="renderCards()"><option value="Todas">Todas as populações</option><option value="Adultos">Adultos</option><option value="Idosos">Idosos</option><option value="Infância e Adolescência">Crianças e adolescentes</option></select></label><label>Área clínica<select id="areaFilter" onchange="renderCards()"></select></label><label>Subárea<select id="subFilter" onchange="renderCards()"></select></label></div>
 <div id="cards" class="grid"></div></div></section>
@@ -2417,9 +2417,10 @@ function generateEEM(){
   lines.push(corrido?`${cap(parts.join(", "))}.`:`${section}: ${cap(parts.join("; "))}.`);
  });
  const out=host.querySelector("#eemOutput");
- if(!lines.length){out.value="Nenhum achado registrado.";return;}
+ if(!lines.length){out.value="Nenhum achado registrado.";out.dataset.generated=out.value;return;}
  /* Em tópicos: uma linha por função (súmula). Texto corrido: um parágrafo com uma frase por função. */
  out.value=corrido?"Exame psíquico: "+lines.join(" "):"Exame psíquico (súmula psicopatológica):\n"+lines.join("\n");
+ out.dataset.generated=out.value;
 }
 function clearEEM(){
  if(!confirm("Limpar os campos do exame psíquico?"))return;
@@ -2430,10 +2431,18 @@ function clearEEM(){
  Object.keys(eemMods).forEach(k=>delete eemMods[k]);
  eemRenderAllMods(host);
 }
+/* Copiar sem precisar gerar antes: se o texto não foi editado à mão, é refeito com as marcações atuais. */
 async function copyEEM(){
- const out=document.getElementById("eemOutput");if(!out.value)return;
- try{await navigator.clipboard.writeText(out.value);alert("Texto copiado.");}
- catch(e){out.select();document.execCommand("copy");}
+ const out=document.getElementById("eemOutput");
+ if(!out.value||out.value===out.dataset.generated)generateEEM();
+ if(!out.value||out.value==="Nenhum achado registrado.")return eemCopyStatus("Marque algum achado antes de copiar.");
+ try{await navigator.clipboard.writeText(out.value);eemCopyStatus("Texto copiado. É só colar no prontuário.");}
+ catch(e){out.select();document.execCommand("copy");eemCopyStatus("Texto copiado.");}
+}
+function eemCopyStatus(msg){
+ let s=document.getElementById("eemCopyStatus");
+ if(!s){const btn=document.getElementById("eemCopy");if(!btn)return;s=document.createElement("span");s.id="eemCopyStatus";s.className="small";s.setAttribute("role","status");btn.after(s);}
+ s.textContent=msg;
 }
 document.addEventListener("DOMContentLoaded",initEEM);
 /* Link direto para uma escala: ?escala=npi (usado pelo Laboratório do Psiquiatria em Questão). */
@@ -2664,4 +2673,96 @@ details.application-guide[open]>summary{margin-bottom:8px}
 .eem-format{background:#fff;border:1px solid #dce6df;border-radius:16px;padding:16px 20px;margin:22px 0 10px;display:grid;gap:10px}
 .eem-format .eem-sex-options button{padding:10px 22px;border:1px solid #cbdcd2;border-radius:12px;background:#fff;cursor:pointer;color:#234c40;font-weight:700}
 .eem-format .eem-sex-options button.selected{background:#084e52;color:white;border-color:#084e52}
-</style></body></html>
+</style>
+<style id="a11y">
+/* Acessibilidade (WCAG 2.2 AA) */
+.skip-link{position:absolute;left:12px;top:-60px;z-index:1000;padding:10px 14px;border-radius:10px;background:#0b6b70;color:#fff;font-weight:700;text-decoration:none}
+.skip-link:focus{top:12px}
+:focus-visible{outline:3px solid #0b6b70!important;outline-offset:2px}
+.eem-chip:focus-visible,.symptom-chip:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #0b6b70!important;outline-offset:2px}
+label:has(> input[type=radio]:focus-visible),label:has(> input[type=checkbox]:focus-visible){outline:3px solid #0b6b70;outline-offset:2px;border-radius:8px}
+.eyebrow{color:#4a6b5b}
+.eem-mode{color:#4f6469}
+#eemCopyStatus{margin-left:10px;align-self:center}
+/* Alvo mínimo de 24 px (lista compacta da Biblioteca deixava "Aplicar" com 16 px de altura). */
+.card .actions .btn{min-height:24px}
+</style>
+<script>
+/* Acessibilidade (WCAG 2.2 AA), sem mudar o visual:
+   1. Link "Pular para o conteúdo" no topo, para quem navega pelo teclado.
+   2. Botão do menu informa se a navegação está aberta (aria-expanded).
+   3. Nas escalas, cada grupo de opções ganha nome para o leitor de tela (o texto da pergunta) e
+      campos sem rótulo (listas, números, textos) ganham o rótulo do título ou do texto ao lado. */
+(function(){
+ const main=document.querySelector("main");
+ if(main){
+  if(!main.id)main.id="conteudo";
+  main.setAttribute("tabindex","-1");
+  const skip=document.createElement("a");
+  skip.href="#"+main.id;skip.className="skip-link no-print";skip.textContent="Pular para o conteúdo";
+  document.body.prepend(skip);
+ }
+ const menuBtns=()=>[...document.querySelectorAll('button[aria-label="Abrir navegação"]')];
+ const syncMenu=()=>menuBtns().forEach(b=>b.setAttribute("aria-expanded",String(document.body.classList.contains("nav-open"))));
+ new MutationObserver(syncMenu).observe(document.body,{attributes:true,attributeFilter:["class"]});
+ syncMenu();
+
+ const clean=t=>String(t||"").replace(/\s+/g," ").trim().slice(0,180);
+ const isControl=e=>e.matches("input,select,textarea,button,br,hr");
+ /* Texto mais próximo antes do elemento (subindo até a área da escala), ignorando controles. */
+ function textBefore(el,stop){
+  let n=el;
+  while(n&&n!==stop){
+   let p=n.previousElementSibling;
+   while(p){
+    if(!isControl(p)&&!p.querySelector("input,select,textarea")){const t=clean(p.innerText);if(t)return t;}
+    p=p.previousElementSibling;
+   }
+   n=n.parentElement;
+  }
+  return "";
+ }
+ /* Título mais próximo antes do elemento: h2–h4, legenda ou negrito que abre um bloco (não dentro de uma opção). */
+ function questionTitle(el,root){
+  const scope=root||el.closest("#assessment,#eemView")||document.body;
+  const hs=[...scope.querySelectorAll("h2,h3,h4,legend,strong,summary")].filter(h=>!h.closest("label,button,details:not([open])>*:not(summary)")&&(h.compareDocumentPosition(el)&Node.DOCUMENT_POSITION_FOLLOWING)&&!h.contains(el));
+  for(let i=hs.length-1;i>=0;i-=1){const h=hs[i];if(h.tagName==="STRONG"&&h.parentElement.firstElementChild!==h)continue;if(h.tagName==="SUMMARY"||h.closest("summary"))continue;const t=clean(h.innerText);if(t)return t;}
+  return "";
+ }
+ /* Texto curto logo antes do elemento (rótulo solto, frase da pergunta). */
+ function shortBefore(el){let p=el.previousElementSibling;while(p&&isControl(p))p=p.previousElementSibling;if(!p||p.matches("details")||p.querySelector("input,select,textarea"))return "";const t=clean(p.innerText);return t.length<=140?t:"";}
+ function common(els){let a=els[0].parentElement;while(a&&!els.every(e=>a.contains(e)))a=a.parentElement;return a;}
+ function labelForms(root){
+  if(!root)return;
+  const names=new Set([...root.querySelectorAll("input[type=radio]")].map(r=>r.name).filter(Boolean));
+  names.forEach(name=>{
+   const radios=[...root.querySelectorAll(`input[type=radio][name="${CSS.escape(name)}"]`)];
+   if(!radios.length||radios[0].closest("fieldset,[role=radiogroup]"))return;
+   const box=common(radios);
+   if(!box||box===root||box.matches("main,body"))return;
+   box.setAttribute("role","radiogroup");
+   const title=questionTitle(box,root),near=shortBefore(box);
+   const label=[title,near&&near!==title?near:""].filter(Boolean).join(" — ")||textBefore(box,root);
+   if(label&&!box.hasAttribute("aria-label"))box.setAttribute("aria-label",label);
+  });
+  root.querySelectorAll("select,input:not([type=radio]):not([type=checkbox]):not([type=hidden]):not([type=button]):not([type=submit]),textarea").forEach(f=>{
+   if(f.hasAttribute("aria-label")||f.hasAttribute("aria-labelledby")||f.closest("label"))return;
+   if(f.id&&document.querySelector(`label[for="${CSS.escape(f.id)}"]`))return;
+   const near=shortBefore(f);
+   const title=questionTitle(f,root);
+   const ph=clean(f.getAttribute("placeholder"));
+   const parts=[title,near!==title?near:"",ph].filter(Boolean);
+   if(parts.length)f.setAttribute("aria-label",[...new Set(parts)].join(" — "));
+  });
+ }
+ let queued=false;
+ const run=()=>{queued=false;["assessment","eemView","home","libraryView"].forEach(id=>labelForms(document.getElementById(id)));};
+ const schedule=()=>{if(!queued){queued=true;setTimeout(run,0);}};
+ const start=()=>{
+  ["assessment","eemView"].forEach(id=>{const el=document.getElementById(id);if(el)new MutationObserver(schedule).observe(el,{childList:true,subtree:true});});
+  schedule();
+ };
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
+})();
+</script>
+</body></html>
