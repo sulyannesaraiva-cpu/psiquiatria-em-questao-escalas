@@ -257,10 +257,10 @@ h1{letter-spacing:-.02em!important}h1 em{color:#0b6b70}
 @media print{.pq-switch{display:none!important}}
 </style></head>
 <body>
-<header class="mobile-header"><div class="brand"><b><svg class="pq-mark" viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true"><g transform="translate(0 -1)"><circle cx="8" cy="9.5" r="4.3" stroke="#ffffff" stroke-width="2.3"></circle><circle cx="16" cy="9.5" r="4.3" stroke="#ffffff" stroke-width="2.3"></circle><path d="M3.7 5.5V21" stroke="#ffffff" stroke-width="2.3"></path><path d="M20.3 5.5V21" stroke="#f2b544" stroke-width="2.3"></path></g></svg></b> Psiquiatria em Questão</div><button class="btn secondary" onclick="document.body.classList.toggle('nav-open')" aria-label="Abrir navegação">☰ Menu</button><nav class="pq-switch pq-switch-3" aria-label="Área do site"><a href="https://www.psiquiatriaemquestao.com.br/">Questões</a><a href="https://www.psiquiatriaemquestao.com.br/?area=lab">Laboratório</a><a href="/" aria-current="page">Escalas</a></nav></header>
+<header class="mobile-header"><div class="brand"><b><svg class="pq-mark" viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true"><g transform="translate(0 -1)"><circle cx="8" cy="9.5" r="4.3" stroke="#ffffff" stroke-width="2.3"></circle><circle cx="16" cy="9.5" r="4.3" stroke="#ffffff" stroke-width="2.3"></circle><path d="M3.7 5.5V21" stroke="#ffffff" stroke-width="2.3"></path><path d="M20.3 5.5V21" stroke="#f2b544" stroke-width="2.3"></path></g></svg></b> Psiquiatria em Questão</div><button class="btn secondary" onclick="document.body.classList.toggle('nav-open')" aria-label="Abrir navegação">☰ Menu</button><nav class="pq-switch pq-switch-3" aria-label="Área do site"><a href="https://www.psiquiatriaemquestao.com.br/">Questões</a><a href="https://www.psiquiatriaemquestao.com.br/?area=lab">Simulações</a><a href="/" aria-current="page">Escalas</a></nav></header>
 <aside class="sidebar no-print" aria-label="Navegação principal">
  <div class="sidebar-brand"><span class="brand-icon"><svg class="pq-mark" viewBox="0 0 24 24" fill="none" stroke-linecap="round" aria-hidden="true"><g transform="translate(0 -1)"><circle cx="8" cy="9.5" r="4.3" stroke="#ffffff" stroke-width="2.3"></circle><circle cx="16" cy="9.5" r="4.3" stroke="#ffffff" stroke-width="2.3"></circle><path d="M3.7 5.5V21" stroke="#ffffff" stroke-width="2.3"></path><path d="M20.3 5.5V21" stroke="#f2b544" stroke-width="2.3"></path></g></svg></span><div><strong>Psiquiatria em Questão</strong><small>ESCALAS</small></div></div>
- <nav class="pq-switch pq-switch-3" aria-label="Área do site"><a href="https://www.psiquiatriaemquestao.com.br/">Questões</a><a href="https://www.psiquiatriaemquestao.com.br/?area=lab">Laboratório</a><a href="/" aria-current="page">Escalas</a></nav>
+ <nav class="pq-switch pq-switch-3" aria-label="Área do site"><a href="https://www.psiquiatriaemquestao.com.br/">Questões</a><a href="https://www.psiquiatriaemquestao.com.br/?area=lab">Simulações</a><a href="/" aria-current="page">Escalas</a></nav>
  <div class="side-section">ESPAÇO CLÍNICO</div>
  <button class="side-link selected" onclick="goHome();document.body.classList.remove('nav-open')">⌂ <span>Início</span></button>
  <button class="side-link" onclick="showLibrary()">⌕ <span>Biblioteca de escalas</span></button>
@@ -2445,14 +2445,14 @@ function eemCopyStatus(msg){
  s.textContent=msg;
 }
 document.addEventListener("DOMContentLoaded",initEEM);
-/* Link direto para uma escala: ?escala=npi (usado pelo Laboratório do Psiquiatria em Questão). */
+/* Link direto para uma escala: ?escala=npi (usado pelas Simulações do Psiquiatria em Questão). */
 window.addEventListener("load",()=>{try{const id=new URLSearchParams(location.search).get("escala");if(id&&instruments.some(x=>x.id===id))openInstrument(id);}catch(e){}});
 
 /* ---------- Usabilidade (celular e computador) ----------
    1. Escalas com botão próprio de cálculo: o botão genérico "Calcular resultado" some (não funcionava nelas).
    2. Barra fixa de aplicação: "X de N respondidas" + botão que aciona o cálculo da escala.
    3. Início: busca e atalhos das escalas mais usadas antes da apresentação.
-   4. Celular: barra de navegação embaixo (Início, Escalas, Exame psíquico, Estudo, Laboratório). */
+   4. Celular: barra de navegação embaixo (Início, Escalas, Exame psíquico, Questões, Simulações). */
 (function(){
   const assessment=document.getElementById("assessment");
   const genericCalc=document.getElementById("calc");
@@ -2510,7 +2510,7 @@ window.addEventListener("load",()=>{try{const id=new URLSearchParams(location.se
   /* Celular: barra de navegação embaixo. */
   const nav=document.createElement("nav");
   nav.id="bottomNavPc";nav.className="bottom-nav-pc no-print";nav.setAttribute("aria-label","Navegação");
-  nav.innerHTML=`<button type="button" data-bn="home"><span aria-hidden="true">⌂</span>Início</button><button type="button" data-bn="lib"><span aria-hidden="true">⌕</span>Escalas</button><button type="button" data-bn="eem"><span aria-hidden="true">▤</span>Exame</button><a href="https://www.psiquiatriaemquestao.com.br/"><span aria-hidden="true">✎</span>Questões</a><a href="https://www.psiquiatriaemquestao.com.br/?area=lab"><span aria-hidden="true">⚗</span>Laboratório</a>`;
+  nav.innerHTML=`<button type="button" data-bn="home"><span aria-hidden="true">⌂</span>Início</button><button type="button" data-bn="lib"><span aria-hidden="true">⌕</span>Escalas</button><button type="button" data-bn="eem"><span aria-hidden="true">▤</span>Exame</button><a href="https://www.psiquiatriaemquestao.com.br/"><span aria-hidden="true">✎</span>Questões</a><a href="https://www.psiquiatriaemquestao.com.br/?area=lab"><span aria-hidden="true">⚗</span>Simulações</a>`;
   document.body.appendChild(nav);
   nav.addEventListener("click",e=>{const b=e.target.closest("[data-bn]");if(!b)return;const k=b.dataset.bn;if(k==="home")goHome();else if(k==="lib")showLibrary();else if(k==="eem")showEEM();document.body.classList.remove("nav-open");window.scrollTo(0,0);});
   function syncBottomNav(){
