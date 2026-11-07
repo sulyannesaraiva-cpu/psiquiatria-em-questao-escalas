@@ -2802,4 +2802,178 @@ label:has(> input[type=radio]:focus-visible),label:has(> input[type=checkbox]:fo
     .observe(document.querySelector("main")||document.body,{attributes:true,subtree:true,attributeFilter:["class"]});
 })();
 </script>
+<script>
+/* Conta grátis (só no modo embutido): escalas favoritas, kits de escalas e modelos de exame psíquico.
+   - Quem guarda é o site principal, na conta da pessoa. Ele manda {pq:"escalas-prefs", logged, prefs}; daqui vai
+     {pq:"escalas-save", prefs} a cada mudança, ou {pq:"escalas-need-account", what} se não houver conta.
+   - Modelo de exame psíquico = só as marcações (achados, intensidade, dúvida, concordância e formato). As anotações
+     livres e o texto gerado nunca saem do navegador: podem ter dado do paciente.
+   - Nenhum resultado de escala é guardado. */
+(function(){
+  if(!document.documentElement.classList.contains("pq-embed"))return;
+  var ORIGINS=/^https:\/\/(www\.)?psiquiatriaemquestao\.com\.br$|^http:\/\/localhost(:\d+)?$/;
+  var parentOrigin=null, logged=false;
+  var prefs={favorites:[],kits:[],eemModels:[]};
+  var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});};
+  var byId=function(id){return instruments.find(function(x){return x.id===id;});};
+  var newId=function(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);};
+
+  var css=document.createElement("style");
+  css.textContent=[
+    ".pq-mine{margin:22px 0 8px;padding:18px 20px;border:1px solid var(--line);border-radius:16px;background:var(--card)}",
+    ".pq-mine h2{margin:0 0 4px;font-size:1.15rem}.pq-mine>p{margin:0 0 12px;color:var(--muted);font-size:.92rem}",
+    ".pq-mine h3{margin:14px 0 8px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}",
+    ".pq-chips{display:flex;flex-wrap:wrap;gap:8px}",
+    ".pq-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:#fff;padding:7px 12px;font:inherit;font-size:.86rem;font-weight:600;color:var(--accent);cursor:pointer}",
+    ".pq-chip:hover{border-color:var(--accent)}.pq-chip .x{color:var(--muted);font-weight:700;padding-left:2px}",
+    ".pq-kit{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px}",
+    ".pq-kit-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}.pq-kit-head strong{font-size:.98rem}",
+    ".pq-link{border:0;background:none;padding:0;font:inherit;font-size:.84rem;color:var(--muted);text-decoration:underline;cursor:pointer}",
+    ".pq-empty{color:var(--muted);font-size:.88rem;margin:0}",
+    ".pq-tools{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}",
+    ".pq-tool{width:auto;border:1px solid var(--line);border-radius:10px;background:#fff;padding:8px 12px;font:inherit;font-size:.86rem;font-weight:700;color:var(--accent);cursor:pointer}",
+    ".pq-tool[aria-pressed=true]{background:var(--soft);border-color:var(--accent)}",
+    ".pq-menu{display:grid;gap:4px;margin:6px 0 0;padding:8px;border:1px solid var(--line);border-radius:12px;background:#fff;max-width:320px}",
+    ".pq-menu button{text-align:left;border:0;background:none;padding:8px 10px;border-radius:8px;font:inherit;font-size:.9rem;cursor:pointer}.pq-menu button:hover{background:var(--soft)}",
+    ".pq-invite{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}",
+    ".pq-invite p{margin:0;color:var(--muted);font-size:.92rem;flex:1 1 260px}",
+    ".pq-models{margin:16px 0;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--card)}",
+    ".pq-models>strong{display:block;margin-bottom:6px}.pq-models .small{margin:6px 0 0}"
+  ].join("");
+  document.head.appendChild(css);
+
+  function send(msg){if(parentOrigin)parent.postMessage(msg,parentOrigin);}
+  function save(){send({pq:"escalas-save",prefs:prefs});renderAll();}
+  function needAccount(what){send({pq:"escalas-need-account",what:what});}
+
+  /* ---------- Início: Minhas escalas ---------- */
+  function chip(id,extra){var x=byId(id);if(!x)return "";return '<button type="button" class="pq-chip" data-pq-open="'+esc(id)+'">'+esc(x.name.split(" — ")[0])+(extra||"")+"</button>";}
+  function renderHome(){
+    var home=document.getElementById("home");if(!home)return;
+    var box=document.getElementById("pqMine");
+    if(!box){box=document.createElement("section");box.id="pqMine";box.className="pq-mine";var lead=home.querySelector(".lead");if(lead)lead.after(box);else home.prepend(box);}
+    if(!logged){
+      box.innerHTML='<div class="pq-invite"><p><strong>Suas escalas à mão.</strong> Com a conta grátis você guarda favoritas, monta kits (ex.: primeira consulta) e salva modelos de exame psíquico.</p><button type="button" class="pq-tool" data-pq-account="inicio">Criar conta grátis</button></div>';
+      return;
+    }
+    var favs=prefs.favorites.filter(byId);
+    var kits=prefs.kits;
+    box.innerHTML='<h2>Minhas escalas</h2><p>Favoritas e kits ficam na sua conta. Nenhum resultado de escala é guardado.</p>'
+      +'<h3>Favoritas</h3>'+(favs.length?'<div class="pq-chips">'+favs.map(function(id){return chip(id);}).join("")+'</div>':'<p class="pq-empty">Toque em ☆ Favoritar ao abrir uma escala.</p>')
+      +'<h3>Kits</h3>'+(kits.length?kits.map(function(k){
+        var ids=k.ids.filter(byId);
+        return '<div class="pq-kit"><div class="pq-kit-head"><strong>'+esc(k.name)+'</strong><span><button type="button" class="pq-link" data-pq-kit-rename="'+esc(k.id)+'">Renomear</button> · <button type="button" class="pq-link" data-pq-kit-del="'+esc(k.id)+'">Excluir</button></span></div>'
+          +(ids.length?'<div class="pq-chips">'+ids.map(function(id){return chip(id,'<span class="x" data-pq-kit-rm="'+esc(k.id)+'|'+esc(id)+'" title="Tirar do kit" aria-label="Tirar do kit">×</span>');}).join("")+'</div>':'<p class="pq-empty">Kit vazio. Abra uma escala e use "Adicionar a um kit".</p>')+'</div>';
+      }).join(""):'<p class="pq-empty">Monte um kit para aplicar sempre o mesmo conjunto: abra uma escala e use "Adicionar a um kit".</p>');
+  }
+
+  /* ---------- Escala aberta: favoritar e adicionar a kit ---------- */
+  function renderTools(){
+    var head=document.getElementById("assessmentHead");
+    if(!head||typeof current==="undefined"||!current)return;
+    var tools=head.querySelector(".pq-tools");
+    if(!tools){tools=document.createElement("div");tools.className="pq-tools no-print";var h1=head.querySelector("h1");if(h1)h1.after(tools);else head.appendChild(tools);}
+    var fav=logged&&prefs.favorites.indexOf(current.id)>=0;
+    tools.innerHTML='<button type="button" class="pq-tool" data-pq-fav aria-pressed="'+fav+'">'+(fav?"★ Favorita":"☆ Favoritar")+'</button><button type="button" class="pq-tool" data-pq-kitmenu aria-expanded="false">+ Adicionar a um kit</button>';
+  }
+  function kitMenu(btn){
+    var tools=btn.parentNode;
+    var old=tools.nextElementSibling&&tools.nextElementSibling.classList.contains("pq-menu")?tools.nextElementSibling:null;
+    if(old){old.remove();btn.setAttribute("aria-expanded","false");return;}
+    var m=document.createElement("div");m.className="pq-menu no-print";m.setAttribute("role","menu");
+    m.innerHTML=prefs.kits.map(function(k){var has=k.ids.indexOf(current.id)>=0;return '<button type="button" role="menuitem" data-pq-kit-add="'+esc(k.id)+'"'+(has?' disabled':'')+'>'+esc(k.name)+(has?" (já está)":"")+'</button>';}).join("")+'<button type="button" role="menuitem" data-pq-kit-new>+ Novo kit…</button>';
+    tools.after(m);btn.setAttribute("aria-expanded","true");
+  }
+
+  /* ---------- Exame psíquico: modelos ---------- */
+  function eemHost(){return document.getElementById("eemView");}
+  function eemSnapshot(){
+    var host=eemHost();
+    var sel=[].map.call(host.querySelectorAll(".eem-chip.selected"),function(b){return b.dataset.i+"-"+b.dataset.j+"-"+b.dataset.k;});
+    var mods={};Object.keys(eemMods).forEach(function(k){var m=eemMods[k];if(m&&(m.lvl||m.doubt))mods[k]={lvl:m.lvl||0,doubt:!!m.doubt};});
+    return {sel:sel,mods:mods,sex:eemSex,fmt:eemFmt};
+  }
+  function eemApply(model){
+    var host=eemHost();if(!host)return;
+    var sexBtn=host.querySelector('[data-sex="'+model.sex+'"]');if(sexBtn&&model.sex!==eemSex)sexBtn.click();
+    var fmtBtn=host.querySelector('[data-fmt="'+model.fmt+'"]');if(fmtBtn&&model.fmt!==eemFmt)fmtBtn.click();
+    host.querySelectorAll(".eem-chip.selected").forEach(function(b){b.classList.remove("selected");b.setAttribute("aria-pressed","false");});
+    Object.keys(eemMods).forEach(function(k){delete eemMods[k];});
+    (model.sel||[]).forEach(function(key){var p=String(key).split("-");var b=host.querySelector('.eem-chip[data-i="'+p[0]+'"][data-j="'+p[1]+'"][data-k="'+p[2]+'"]');if(b){b.classList.add("selected");b.setAttribute("aria-pressed","true");}});
+    Object.keys(model.mods||{}).forEach(function(k){eemMods[k]={lvl:model.mods[k].lvl||0,doubt:!!model.mods[k].doubt};});
+    if(typeof eemRenderAllMods==="function")eemRenderAllMods(host);
+    if(typeof eemUpdateCount==="function")eemCatalog.forEach(function(_,i){eemUpdateCount(host,i);});
+    var out=host.querySelector("#eemOutput");if(out){out.value="";out.dataset.generated="";}
+  }
+  function renderModels(){
+    var host=eemHost();if(!host||!host.querySelector("#eemGenerate"))return;
+    var box=host.querySelector(".pq-models");
+    if(!box){box=document.createElement("div");box.className="pq-models no-print";var anchor=host.querySelector(".eem-format")||host.querySelector("#eemGenerate").parentNode;anchor.before(box);}
+    if(!logged){box.innerHTML='<div class="pq-invite"><p><strong>Modelos de exame psíquico.</strong> Com a conta grátis você salva suas marcações de sempre e começa cada exame a partir delas.</p><button type="button" class="pq-tool" data-pq-account="modelos">Criar conta grátis</button></div>';return;}
+    box.innerHTML='<strong>Meus modelos</strong>'+(prefs.eemModels.length?'<div class="pq-chips">'+prefs.eemModels.map(function(m){return '<button type="button" class="pq-chip" data-pq-model="'+esc(m.id)+'">'+esc(m.name)+'<span class="x" data-pq-model-del="'+esc(m.id)+'" title="Excluir modelo" aria-label="Excluir modelo">×</span></button>';}).join("")+'</div>':'<p class="pq-empty">Marque os achados que você costuma usar e salve como modelo.</p>')
+      +'<div class="pq-tools"><button type="button" class="pq-tool" data-pq-model-save>Salvar marcações como modelo</button></div><p class="small">O modelo guarda só as marcações. Anotações livres e o texto gerado não saem do navegador.</p>';
+  }
+
+  function renderAll(){renderHome();renderTools();renderModels();}
+
+  /* ---------- cliques ---------- */
+  document.addEventListener("click",function(e){
+    var t=e.target;
+    var acc=t.closest("[data-pq-account]");if(acc){needAccount(acc.dataset.pqAccount);return;}
+    var rm=t.closest("[data-pq-kit-rm]");
+    if(rm){e.stopPropagation();var p=rm.dataset.pqKitRm.split("|");prefs.kits.forEach(function(k){if(k.id===p[0])k.ids=k.ids.filter(function(i){return i!==p[1];});});save();return;}
+    var mdel=t.closest("[data-pq-model-del]");
+    if(mdel){e.stopPropagation();var m=prefs.eemModels.find(function(x){return x.id===mdel.dataset.pqModelDel;});if(m&&confirm('Excluir o modelo "'+m.name+'"?')){prefs.eemModels=prefs.eemModels.filter(function(x){return x!==m;});save();}return;}
+    var open=t.closest("[data-pq-open]");if(open){openInstrument(open.dataset.pqOpen);window.scrollTo(0,0);return;}
+    if(t.closest("[data-pq-fav]")){
+      if(!logged)return needAccount("favoritos");
+      var i=prefs.favorites.indexOf(current.id);if(i>=0)prefs.favorites.splice(i,1);else prefs.favorites.push(current.id);save();return;
+    }
+    var km=t.closest("[data-pq-kitmenu]");if(km){if(!logged)return needAccount("kits");kitMenu(km);return;}
+    var add=t.closest("[data-pq-kit-add]");
+    if(add){prefs.kits.forEach(function(k){if(k.id===add.dataset.pqKitAdd&&k.ids.indexOf(current.id)<0)k.ids.push(current.id);});var mm=add.closest(".pq-menu");if(mm)mm.remove();save();return;}
+    if(t.closest("[data-pq-kit-new]")){
+      var mn=t.closest(".pq-menu");if(mn)mn.remove();
+      var name=(prompt("Nome do kit (ex.: Primeira consulta de ansiedade):")||"").trim().slice(0,60);
+      if(!name)return;prefs.kits.push({id:newId(),name:name,ids:[current.id]});save();return;
+    }
+    var ren=t.closest("[data-pq-kit-rename]");
+    if(ren){var k=prefs.kits.find(function(x){return x.id===ren.dataset.pqKitRename;});if(!k)return;var nn=(prompt("Novo nome do kit:",k.name)||"").trim().slice(0,60);if(nn){k.name=nn;save();}return;}
+    var del=t.closest("[data-pq-kit-del]");
+    if(del){var kd=prefs.kits.find(function(x){return x.id===del.dataset.pqKitDel;});if(kd&&confirm('Excluir o kit "'+kd.name+'"?')){prefs.kits=prefs.kits.filter(function(x){return x!==kd;});save();}return;}
+    if(t.closest("[data-pq-model-save]")){
+      var snap=eemSnapshot();
+      if(!snap.sel.length){alert("Marque algum achado antes de salvar o modelo.");return;}
+      var mname=(prompt("Nome do modelo (ex.: Ambulatório, sem alterações):")||"").trim().slice(0,60);
+      if(!mname)return;snap.id=newId();snap.name=mname;prefs.eemModels.push(snap);save();return;
+    }
+    var model=t.closest("[data-pq-model]");
+    if(model){var md=prefs.eemModels.find(function(x){return x.id===model.dataset.pqModel;});if(!md)return;
+      var host=eemHost();if(host&&host.querySelector(".eem-chip.selected")&&!confirm('Trocar as marcações atuais pelas do modelo "'+md.name+'"?'))return;
+      eemApply(md);return;}
+  },true);
+
+  /* ---------- conversa com o site principal ---------- */
+  window.addEventListener("message",function(e){
+    if(!ORIGINS.test(e.origin)||!e.data)return;
+    if(e.data.pq==="escalas"&&!parentOrigin)parentOrigin=e.origin;
+    if(e.data.pq!=="escalas-prefs")return;
+    parentOrigin=e.origin;
+    logged=!!e.data.logged;
+    var p=e.data.prefs||{};
+    prefs={
+      favorites:Array.isArray(p.favorites)?p.favorites.filter(function(x){return typeof x==="string";}):[],
+      kits:Array.isArray(p.kits)?p.kits.filter(function(k){return k&&k.id;}).map(function(k){return{id:String(k.id),name:String(k.name||"Kit"),ids:Array.isArray(k.ids)?k.ids.filter(function(x){return typeof x==="string";}):[]};}):[],
+      eemModels:Array.isArray(p.eemModels)?p.eemModels.filter(function(m){return m&&m.id;}):[]
+    };
+    renderAll();
+  });
+  /* A cabeça da escala é redesenhada a cada abertura: recoloca os botões. */
+  var head=document.getElementById("assessmentHead");
+  if(head)new MutationObserver(function(){if(!head.querySelector(".pq-tools"))renderTools();}).observe(head,{childList:true});
+  var eem=eemHost();
+  if(eem)new MutationObserver(function(){if(!eem.querySelector(".pq-models"))renderModels();}).observe(eem,{childList:true});
+  renderAll();
+})();
+</script>
 </body></html>
