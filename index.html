@@ -2765,4 +2765,41 @@ label:has(> input[type=radio]:focus-visible),label:has(> input[type=checkbox]:fo
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();
 })();
 </script>
+<script>
+/* Modo embutido: o site principal (psiquiatriaemquestao.com.br) mostra as Escalas dentro dele com ?embed=1.
+   - Some a moldura própria (menu lateral, cabeçalho do celular, barra de baixo): quem navega é o menu do site principal.
+   - O site principal manda {pq:"escalas", go:"home"|"lib"|"eem"|"open:<id>"}; daqui volta {pq:"escalas-view", view}
+     para ele marcar o item ativo do menu.
+   - Links para o site principal abrem na janela de cima. Fora do modo embutido nada muda. */
+(function(){
+  var embed=false;
+  try{embed=new URLSearchParams(location.search).get("embed")==="1"&&window.parent!==window;}catch(e){}
+  if(!embed)return;
+  var ORIGINS=/^https:\/\/(www\.)?psiquiatriaemquestao\.com\.br$|^http:\/\/localhost(:\d+)?$/;
+  document.documentElement.classList.add("pq-embed");
+  var css=document.createElement("style");
+  css.textContent=".pq-embed .sidebar,.pq-embed .mobile-header,.pq-embed #bottomNavPc{display:none!important}"
+    +".pq-embed .app-shell{margin-left:0!important}.pq-embed body{padding-bottom:0!important}";
+  document.head.appendChild(css);
+  document.querySelectorAll('a[href^="https://www.psiquiatriaemquestao.com.br"]').forEach(function(a){a.target="_top";});
+  var parentOrigin=null;
+  function vis(id){var el=document.getElementById(id);return el&&!el.classList.contains("hidden");}
+  function view(){return vis("eemView")?"eem":vis("assessment")?"scale":vis("libraryView")?"lib":"home";}
+  function report(){if(parentOrigin)parent.postMessage({pq:"escalas-view",view:view()},parentOrigin);}
+  window.addEventListener("message",function(e){
+    if(!ORIGINS.test(e.origin)||!e.data||e.data.pq!=="escalas")return;
+    parentOrigin=e.origin;
+    var g=e.data.go;
+    if(g==="home")goHome();
+    else if(g==="lib")showLibrary();
+    else if(g==="eem")showEEM();
+    else if(typeof g==="string"&&g.indexOf("open:")===0)quickOpen(g.slice(5));
+    if(g)window.scrollTo(0,0);
+    report();
+  });
+  var t=null;
+  new MutationObserver(function(){clearTimeout(t);t=setTimeout(report,80);})
+    .observe(document.querySelector("main")||document.body,{attributes:true,subtree:true,attributeFilter:["class"]});
+})();
+</script>
 </body></html>
