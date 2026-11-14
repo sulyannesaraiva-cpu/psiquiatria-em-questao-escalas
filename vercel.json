@@ -1,6 +1,9 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/(.*)", "destination": "https://www.psiquiatriaemquestao.com.br/?area=escalas", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",
